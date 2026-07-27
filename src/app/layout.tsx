@@ -15,14 +15,14 @@ const body = Manrope({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://watchorder.example.com"),
+  metadataBase: new URL("https://geekpedia.example.com"),
   title: {
-    default: "Watch Order — Franchise Viewing Guides",
-    template: "%s | Watch Order",
+    default: "Geekpedia — Franchise Viewing Guides",
+    template: "%s | Geekpedia",
   },
   description:
-    "The definitive hub for franchise watch orders — MCU, DCU, Star Wars, Lord of the Rings, X-Men, and more. Easy Mode for newcomers, Deep Dive mode for completionists.",
-  keywords: ["watch order", "MCU watch order", "DCU watch order", "Star Wars watch order", "movie order"],
+    "Geekpedia is the definitive hub for franchise watch orders — MCU, DCU, Star Wars, Lord of the Rings, X-Men, and more. Noob mode for newcomers, Lore Master mode for completionists.",
+  keywords: ["watch order", "MCU watch order", "DCU watch order", "Star Wars watch order", "movie order", "geekpedia"],
 };
 
 export default function RootLayout({
@@ -32,11 +32,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${display.variable} ${body.variable} h-full`}>
-      <body className="min-h-full flex flex-col antialiased">
+      <body className="min-h-full flex flex-col antialiased" suppressHydrationWarning>
         <header className="sticky top-0 z-50 border-b border-border/80 bg-bg/85 backdrop-blur-md">
           <div className="mx-auto flex max-w-6xl items-center justify-between px-5 py-4">
             <Link href="/" className="font-display text-2xl tracking-wide text-text">
-              WATCH<span className="text-[#ed1d24]">ORDER</span>
+              GEEK<span className="text-[#ed1d24]">PEDIA</span>
             </Link>
             <nav className="flex items-center gap-5 text-sm text-text-dim">
               <Link href="/" className="hover:text-text transition-colors">

@@ -11,8 +11,8 @@ export default function Home() {
           Know exactly what<br />to watch <span className="text-[#ed1d24]">next</span>.
         </h1>
         <p className="mx-auto mt-5 max-w-xl text-base text-text-dim sm:text-lg">
-          Every franchise, one clean watch order. Toggle between the essentials-only Easy Order
-          and the full Deep Dive — track your progress as you go.
+          Every franchise, one clean watch order. Switch between Noob, Geek, and Lore Master
+          modes — track your progress as you go.
         </p>
         <div className="mt-8">
           <GlobalSearch />

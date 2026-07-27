@@ -115,7 +115,7 @@ export function FranchiseExplorer({ franchise }: { franchise: Franchise }) {
           ))}
         </div>
 
-        {hydrated && <StatsBar allTitles={franchise.titles} watched={watched} accent={franchise.accent.primary} />}
+        {hydrated && <StatsBar allTitles={visibleTitles} watched={watched} accent={franchise.accent.primary} />}
 
         {hydrated && (
           <ProgressTracker
@@ -134,21 +134,6 @@ export function FranchiseExplorer({ franchise }: { franchise: Franchise }) {
           >
             {spotlight}
           </div>
-        )}
-
-        {franchise.comicsOrderUrl && mode !== "noob" && (
-          <p className="text-sm text-text-dim">
-            Want the comics too? See the{" "}
-            <a
-              href={franchise.comicsOrderUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="underline hover:text-text"
-            >
-              comics reading order guide
-            </a>
-            .
-          </p>
         )}
       </div>
 

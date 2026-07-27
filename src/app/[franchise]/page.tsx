@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { franchiseBySlug, allFranchiseSlugs, franchises } from "@/data/franchises";
+import { franchiseBySlug, allFranchiseSlugs } from "@/data/franchises";
 import { FranchiseExplorer } from "@/components/FranchiseExplorer";
 
 export function generateStaticParams() {
@@ -16,8 +16,8 @@ export async function generateMetadata({
   const franchise = franchiseBySlug(slug);
   if (!franchise) return {};
   return {
-    title: `${franchise.name} Watch Order (Easy Order + Deep Dive)`,
-    description: `The complete ${franchise.name} watch order: essentials-only Easy Order for newcomers, and a full Deep Dive with specials, shorts, and chronology notes. ${franchise.tagline}`,
+    title: `${franchise.name} Watch Order (Essential, Release & Chronological)`,
+    description: `The complete ${franchise.name} watch order: an essentials-only order for newcomers, release order the way fans experienced it, and full chronological order for completionists. ${franchise.tagline}`,
     openGraph: {
       title: `${franchise.name} Watch Order`,
       description: franchise.tagline,
@@ -43,10 +43,7 @@ export default async function FranchisePage({
         }}
       >
         <div className="mx-auto max-w-3xl px-5 text-center">
-          <p className="text-xs font-semibold uppercase tracking-[0.3em] text-text-dim">
-            {franchises.length} franchises · pick one
-          </p>
-          <h1 className="font-display mt-2 text-5xl sm:text-6xl">{franchise.name}</h1>
+          <h1 className="font-display text-5xl sm:text-6xl">{franchise.name}</h1>
           <p className="mx-auto mt-3 max-w-xl text-text-dim">{franchise.description}</p>
         </div>
       </section>

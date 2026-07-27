@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "About & Credits",
-  description: "How WatchOrder's viewing guides are put together and where the data comes from.",
+  description: "How Geekpedia's viewing guides are put together and where the data comes from.",
 };
 
 export default function AboutPage() {
@@ -11,7 +11,7 @@ export default function AboutPage() {
       <h1 className="font-display text-4xl">About this site</h1>
       <div className="mt-6 space-y-4 text-text-dim">
         <p>
-          WatchOrder is a hub for franchise viewing orders — movies and TV to start, with comics
+          Geekpedia is a hub for franchise viewing orders — movies and TV to start, with comics
           and game-playing orders planned down the line. The goal is one clean answer to
           &ldquo;what order do I watch this in?&rdquo; instead of a dozen contradictory blog posts.
         </p>
@@ -29,15 +29,16 @@ export default function AboutPage() {
           current as new movies and shows release.
         </p>
         <p>
-          Every franchise ships with two modes: <strong className="text-text">Easy Order</strong>{" "}
-          for newcomers who just want the essential titles, and{" "}
-          <strong className="text-text">Deep Dive</strong> for completionists who want specials,
-          shorts, and chronological alternates. Progress tracking runs entirely in your browser via
-          localStorage — no account, no server, nothing leaves your device.
+          Every franchise ships with three modes: <strong className="text-text">🟢 Noob</strong>{" "}
+          (essential order — only what you need), <strong className="text-text">🔵 Geek</strong>{" "}
+          (release order — the way fans experienced it), and{" "}
+          <strong className="text-text">🟣 Lore Master</strong> (chronological order — the story
+          timeline). Progress tracking runs entirely in your browser via localStorage — no account,
+          no server, nothing leaves your device.
         </p>
         <p>
-          Poster art is represented with stylized placeholder tiles rather than studio artwork, to
-          keep this project free of licensing issues.
+          Poster art is sourced from Wikipedia (fair-use film/show poster crops), used purely as a
+          visual aid — not redistributed or claimed as original content.
         </p>
         <p>Spot an error or an outdated entry? This is a living project — updates roll out as franchises evolve.</p>
       </div>

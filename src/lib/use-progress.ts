@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 
-const storageKey = (franchiseSlug: string) => `watchorder:progress:${franchiseSlug}`;
+const storageKey = (franchiseSlug: string) => `geekpedia:progress:${franchiseSlug}`;
 
 function readProgress(franchiseSlug: string): Set<string> {
   if (typeof window === "undefined") return new Set();
