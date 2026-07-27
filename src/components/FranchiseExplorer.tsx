@@ -15,6 +15,7 @@ export function FranchiseExplorer({ franchise }: { franchise: Franchise }) {
   const [mode, setMode] = useState<ViewMode>("noob");
   const [typeFilter, setTypeFilter] = useState<TypeFilter>("all");
   const [mcuOnly, setMcuOnly] = useState(false);
+  const [nonMcuOnly, setNonMcuOnly] = useState(false);
   const [layout, setLayout] = useState<Layout>("list");
   const [roadTo, setRoadTo] = useState<string | null>(null);
   const [spotlight, setSpotlight] = useState<string | null>(null);
@@ -34,7 +35,12 @@ export function FranchiseExplorer({ franchise }: { franchise: Franchise }) {
 
   const visibleTitles = useMemo(() => {
     if (roadTo) {
-      return sortedByChrono.filter((t) => t.roadTo?.includes(roadTo));
+      const effectiveRoadTo = mcuOnly && roadTo === "doomsday" ? "doomsday-mcu-only" : roadTo;
+      let list = sortedByChrono.filter((t) => t.roadTo?.includes(effectiveRoadTo));
+      if (nonMcuOnly) {
+        list = list.filter((t) => t.nonMcuCanon);
+      }
+      return list;
     }
     let list = mode === "lore" && franchise.hasChronoOrder ? sortedByChrono : sortedByRelease;
     if (mode === "noob") {
@@ -46,8 +52,11 @@ export function FranchiseExplorer({ franchise }: { franchise: Franchise }) {
     if (mcuOnly) {
       list = list.filter((t) => !t.nonMcuCanon);
     }
+    if (nonMcuOnly) {
+      list = list.filter((t) => t.nonMcuCanon);
+    }
     return list;
-  }, [mode, typeFilter, mcuOnly, roadTo, sortedByRelease, sortedByChrono, franchise.hasChronoOrder]);
+  }, [mode, typeFilter, mcuOnly, nonMcuOnly, roadTo, sortedByRelease, sortedByChrono, franchise.hasChronoOrder]);
 
   const handleResume = () => {
     const next = visibleTitles.find((t) => !watched.has(t.id));
@@ -82,28 +91,81 @@ export function FranchiseExplorer({ franchise }: { franchise: Franchise }) {
         />
 
         {franchise.roadToEvents && franchise.roadToEvents.length > 0 && (
-          <div className="flex flex-wrap gap-2">
-            {franchise.roadToEvents.map((event) => (
-              <button
-                key={event.slug}
-                onClick={() => {
-                  setSpotlight(null);
-                  setRoadTo(roadTo === event.slug ? null : event.slug);
-                }}
-                title={event.description}
-                className={`rounded-full border px-4 py-2 text-xs font-semibold transition-colors ${
-                  roadTo === event.slug ? "border-transparent text-white" : "border-border text-text-dim hover:text-text"
-                }`}
-                style={roadTo === event.slug ? { backgroundColor: franchise.accent.primary } : undefined}
-              >
-                🛡️ {event.label}
-              </button>
-            ))}
+          <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+            {franchise.roadToEvents
+              .filter((event) => event.slug !== "doomsday-mcu-only")
+              .map((event) => {
+                const active = roadTo === event.slug;
+                return (
+                  <button
+                    key={event.slug}
+                    type="button"
+                    onClick={() => {
+                      setSpotlight(null);
+                      setRoadTo(active ? null : event.slug);
+                    }}
+                    className={`rounded-2xl border px-4 py-3 text-left transition-all ${
+                      active ? "border-transparent shadow-lg" : "border-border bg-bg-card hover:border-border/40"
+                    }`}
+                    style={active ? { backgroundColor: `${franchise.accent.primary}1a`, borderColor: franchise.accent.primary } : undefined}
+                  >
+                    <div className="flex items-center gap-2">
+                      <span aria-hidden>🛡️</span>
+                      <span className="font-display text-lg leading-none">{event.label}</span>
+                    </div>
+                    <p className="mt-1 text-sm font-semibold" style={active ? { color: franchise.accent.primary } : undefined}>
+                      Road to Doomsday
+                    </p>
+                    <p className="mt-0.5 text-xs text-text-dim">{event.description}</p>
+                  </button>
+                );
+              })}
           </div>
         )}
 
-        {roadTo && (
-          <p className="text-sm text-text-dim">{franchise.roadToEvents?.find((e) => e.slug === roadTo)?.description}</p>
+        {franchise.slug === "mcu" && (
+          <div className="grid grid-cols-2 gap-2">
+            <button
+              type="button"
+              onClick={() => {
+                setMcuOnly((v) => !v);
+                setNonMcuOnly(false);
+              }}
+              className={`rounded-2xl border px-4 py-3 text-left transition-all ${
+                mcuOnly ? "border-transparent shadow-lg" : "border-border bg-bg-card hover:border-border/40"
+              }`}
+              style={mcuOnly ? { backgroundColor: `${franchise.accent.primary}1a`, borderColor: franchise.accent.primary } : undefined}
+            >
+              <div className="flex items-center gap-2">
+                <span aria-hidden>🅼</span>
+                <span className="font-display text-lg leading-none">Only MCU</span>
+              </div>
+              <p className="mt-1 text-sm font-semibold" style={mcuOnly ? { color: franchise.accent.primary } : undefined}>
+                MCU canon only
+              </p>
+              <p className="mt-0.5 text-xs text-text-dim">Hides Fox X-Men, Sony Spider-Man/Venom, and other non-MCU-canon content — combine with Geek or Lore Master.</p>
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setNonMcuOnly((v) => !v);
+                setMcuOnly(false);
+              }}
+              className={`rounded-2xl border px-4 py-3 text-left transition-all ${
+                nonMcuOnly ? "border-transparent shadow-lg" : "border-border bg-bg-card hover:border-border/40"
+              }`}
+              style={nonMcuOnly ? { backgroundColor: `${franchise.accent.primary}1a`, borderColor: franchise.accent.primary } : undefined}
+            >
+              <div className="flex items-center gap-2">
+                <span aria-hidden>🦇</span>
+                <span className="font-display text-lg leading-none">Non-MCU</span>
+              </div>
+              <p className="mt-1 text-sm font-semibold" style={nonMcuOnly ? { color: franchise.accent.primary } : undefined}>
+                Legacy &amp; adjacent only
+              </p>
+              <p className="mt-0.5 text-xs text-text-dim">Fox X-Men, Sony Spider-Man/Venom, Blade, Ghost Rider, and other pre-MCU or adjacent content.</p>
+            </button>
+          </div>
         )}
 
         <div className="flex flex-wrap gap-2 text-xs">
@@ -119,18 +181,6 @@ export function FranchiseExplorer({ franchise }: { franchise: Franchise }) {
               {f}
             </button>
           ))}
-          {franchise.slug === "mcu" && (
-            <button
-              onClick={() => setMcuOnly((v) => !v)}
-              title="Hide Fox X-Men, Sony Spider-Man/Venom, and other non-MCU-canon content"
-              className={`rounded-full border px-3 py-1.5 font-semibold transition-colors ${
-                mcuOnly ? "border-transparent text-white" : "border-border text-text-dim hover:text-text"
-              }`}
-              style={mcuOnly ? { backgroundColor: franchise.accent.primary } : undefined}
-            >
-              Only MCU
-            </button>
-          )}
           <div className="ml-auto flex gap-1 rounded-full border border-border p-1">
             <button
               type="button"

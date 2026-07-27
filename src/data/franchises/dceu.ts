@@ -27,6 +27,7 @@ export const dceu: Franchise = {
     { id: "black-adam", name: "Black Adam", year: 2022, type: "movie", tier: "recommended", runtimeMinutes: 125, releaseOrder: 13, note: "Dwayne Johnson's long-gestating antihero vehicle; loosely tied to the wider DCEU via a Justice Society tease." },
     { id: "shazam-fury-of-gods", name: "Shazam! Fury of the Gods", year: 2023, type: "movie", tier: "optional", runtimeMinutes: 130, releaseOrder: 14, note: "Underperformed at the box office; a minor entry as the DCEU wound down." },
     { id: "the-flash", name: "The Flash", year: 2023, type: "movie", tier: "essential", runtimeMinutes: 144, releaseOrder: 15, note: "Functions as the DCEU's finale, closing the loop on this continuity." },
-    { id: "aquaman-lost-kingdom", name: "Aquaman and the Lost Kingdom", year: 2023, type: "movie", tier: "recommended", runtimeMinutes: 124, releaseOrder: 16, note: "The last DCEU release before the Gunn reboot." },
+    { id: "blue-beetle", name: "Blue Beetle", year: 2023, type: "movie", tier: "recommended", runtimeMinutes: 127, releaseOrder: 16, note: "A largely standalone, family-friendly origin story — one of the last DCEU films before the Gunn reboot, with minimal ties to the wider continuity." },
+    { id: "aquaman-lost-kingdom", name: "Aquaman and the Lost Kingdom", year: 2023, type: "movie", tier: "recommended", runtimeMinutes: 124, releaseOrder: 17, note: "The last DCEU release before the Gunn reboot." },
   ],
 };
