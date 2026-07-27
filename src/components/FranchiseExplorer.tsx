@@ -2,52 +2,49 @@
 
 import { useMemo, useState } from "react";
 import type { Franchise, MediaType } from "@/types/watch-order";
-import { ModeToggle, type Mode } from "@/components/ModeToggle";
+import { WatchModeToggle, type ViewMode } from "@/components/WatchModeToggle";
 import { TitleCard } from "@/components/TitleCard";
 import { ProgressTracker } from "@/components/ProgressTracker";
+import { StatsBar } from "@/components/StatsBar";
 import { useProgress } from "@/lib/use-progress";
-import { formatRuntimeLong } from "@/lib/runtime";
 
 type TypeFilter = "all" | "movies" | "shows";
-type OrderMode = "release" | "chrono";
 
 export function FranchiseExplorer({ franchise }: { franchise: Franchise }) {
-  const [mode, setMode] = useState<Mode>("easy");
-  const [orderMode, setOrderMode] = useState<OrderMode>(
-    franchise.defaultEasyOrder
-  );
+  const [mode, setMode] = useState<ViewMode>("noob");
   const [typeFilter, setTypeFilter] = useState<TypeFilter>("all");
+  const [roadTo, setRoadTo] = useState<string | null>(null);
   const [spotlight, setSpotlight] = useState<string | null>(null);
   const { watched, toggle, reset, hydrated } = useProgress(franchise.slug);
 
   const isMovieType = (t: MediaType) => t === "movie" || t === "special" || t === "short";
 
-  const sorted = useMemo(() => {
-    const key = mode === "deep" && franchise.hasChronoOrder && orderMode === "chrono" ? "chronoOrder" : "releaseOrder";
-    return [...franchise.titles].sort((a, b) => {
-      const av = (key === "chronoOrder" ? a.chronoOrder : a.releaseOrder) ?? a.releaseOrder;
-      const bv = (key === "chronoOrder" ? b.chronoOrder : b.releaseOrder) ?? b.releaseOrder;
-      return av - bv;
-    });
-  }, [franchise, mode, orderMode]);
-
-  const tierFiltered = useMemo(
-    () => (mode === "easy" ? sorted.filter((t) => t.tier === "essential") : sorted),
-    [sorted, mode]
+  const sortedByRelease = useMemo(
+    () => [...franchise.titles].sort((a, b) => a.releaseOrder - b.releaseOrder),
+    [franchise]
+  );
+  const sortedByChrono = useMemo(
+    () =>
+      [...franchise.titles].sort((a, b) => (a.chronoOrder ?? a.releaseOrder) - (b.chronoOrder ?? b.releaseOrder)),
+    [franchise]
   );
 
-  const typeFilteredTitles = useMemo(() => {
-    if (typeFilter === "all") return tierFiltered;
-    return tierFiltered.filter((t) => (typeFilter === "movies" ? isMovieType(t.type) : t.type === "show"));
-  }, [tierFiltered, typeFilter]);
-
-  const essentialRuntime = franchise.titles
-    .filter((t) => t.tier === "essential")
-    .reduce((sum, t) => sum + t.runtimeMinutes, 0);
-  const fullRuntime = franchise.titles.reduce((sum, t) => sum + t.runtimeMinutes, 0);
+  const visibleTitles = useMemo(() => {
+    if (roadTo) {
+      return sortedByChrono.filter((t) => t.roadTo === roadTo);
+    }
+    let list = mode === "lore" && franchise.hasChronoOrder ? sortedByChrono : sortedByRelease;
+    if (mode === "noob") {
+      list = list.filter((t) => t.tier === "essential");
+    }
+    if (typeFilter !== "all") {
+      list = list.filter((t) => (typeFilter === "movies" ? isMovieType(t.type) : t.type === "show"));
+    }
+    return list;
+  }, [mode, typeFilter, roadTo, sortedByRelease, sortedByChrono, franchise.hasChronoOrder]);
 
   const handleResume = () => {
-    const next = typeFilteredTitles.find((t) => !watched.has(t.id));
+    const next = visibleTitles.find((t) => !watched.has(t.id));
     if (next) {
       setSpotlight(`Resume with: ${next.name} (${next.year})`);
     } else {
@@ -56,9 +53,9 @@ export function FranchiseExplorer({ franchise }: { franchise: Franchise }) {
   };
 
   const handleRandomize = () => {
-    const unwatched = typeFilteredTitles.filter((t) => !watched.has(t.id));
+    const unwatched = visibleTitles.filter((t) => !watched.has(t.id));
     if (unwatched.length === 0) {
-      setSpotlight("Nothing left unwatched here — try Deep Dive mode.");
+      setSpotlight("Nothing left unwatched here — try Lore Master mode for more.");
       return;
     }
     const pick = unwatched[Math.floor(Math.random() * unwatched.length)];
@@ -68,64 +65,65 @@ export function FranchiseExplorer({ franchise }: { franchise: Franchise }) {
   return (
     <div className="mx-auto max-w-3xl px-5 pb-24">
       <div className="flex flex-col gap-6 py-8 sm:py-10">
-        <div className="flex flex-wrap items-center justify-between gap-4">
-          <ModeToggle mode={mode} onChange={setMode} accent={franchise.accent.primary} />
-          <div className="flex gap-2 text-xs">
-            {(["all", "movies", "shows"] as TypeFilter[]).map((f) => (
+        <WatchModeToggle
+          mode={mode}
+          onChange={(m) => {
+            setRoadTo(null);
+            setSpotlight(null);
+            setMode(m);
+          }}
+          accent={franchise.accent.primary}
+        />
+
+        {franchise.roadToEvents && franchise.roadToEvents.length > 0 && (
+          <div className="flex flex-wrap gap-2">
+            {franchise.roadToEvents.map((event) => (
               <button
-                key={f}
-                onClick={() => setTypeFilter(f)}
-                className={`rounded-full border px-3 py-1.5 font-semibold capitalize transition-colors ${
-                  typeFilter === f
-                    ? "border-transparent text-white"
-                    : "border-border text-text-dim hover:text-text"
+                key={event.slug}
+                onClick={() => {
+                  setSpotlight(null);
+                  setRoadTo(roadTo === event.slug ? null : event.slug);
+                }}
+                title={event.description}
+                className={`rounded-full border px-4 py-2 text-xs font-semibold transition-colors ${
+                  roadTo === event.slug ? "border-transparent text-white" : "border-border text-text-dim hover:text-text"
                 }`}
-                style={typeFilter === f ? { backgroundColor: franchise.accent.primary } : undefined}
+                style={roadTo === event.slug ? { backgroundColor: franchise.accent.primary } : undefined}
               >
-                {f}
+                🛡️ {event.label}
               </button>
             ))}
           </div>
-        </div>
-
-        {mode === "deep" && franchise.hasChronoOrder && (
-          <div className="flex items-center gap-3 text-sm text-text-dim">
-            <span>Sort:</span>
-            <button
-              onClick={() => setOrderMode("release")}
-              className={`underline-offset-4 ${orderMode === "release" ? "text-text underline" : "hover:text-text"}`}
-            >
-              Release order
-            </button>
-            <span>/</span>
-            <button
-              onClick={() => setOrderMode("chrono")}
-              className={`underline-offset-4 ${orderMode === "chrono" ? "text-text underline" : "hover:text-text"}`}
-            >
-              Chronological order
-            </button>
-          </div>
         )}
 
-        <div className="grid grid-cols-2 gap-3 text-sm sm:grid-cols-2">
-          <div className="rounded-xl border border-border bg-bg-card p-3">
-            <div className="text-text-dim text-xs">Essentials-only runtime</div>
-            <div className="font-display text-xl">{formatRuntimeLong(essentialRuntime)}</div>
-          </div>
-          <div className="rounded-xl border border-border bg-bg-card p-3">
-            <div className="text-text-dim text-xs">Full list runtime</div>
-            <div className="font-display text-xl">{formatRuntimeLong(fullRuntime)}</div>
-          </div>
+        {roadTo && (
+          <p className="text-sm text-text-dim">{franchise.roadToEvents?.find((e) => e.slug === roadTo)?.description}</p>
+        )}
+
+        <div className="flex flex-wrap gap-2 text-xs">
+          {(["all", "movies", "shows"] as TypeFilter[]).map((f) => (
+            <button
+              key={f}
+              onClick={() => setTypeFilter(f)}
+              className={`rounded-full border px-3 py-1.5 font-semibold capitalize transition-colors ${
+                typeFilter === f ? "border-transparent text-white" : "border-border text-text-dim hover:text-text"
+              }`}
+              style={typeFilter === f ? { backgroundColor: franchise.accent.primary } : undefined}
+            >
+              {f}
+            </button>
+          ))}
         </div>
+
+        {hydrated && <StatsBar allTitles={franchise.titles} watched={watched} accent={franchise.accent.primary} />}
 
         {hydrated && (
           <ProgressTracker
-            titles={typeFilteredTitles}
-            watched={watched}
             accent={franchise.accent.primary}
             onResume={handleResume}
             onRandomize={handleRandomize}
             onReset={reset}
+            showReset={watched.size > 0}
           />
         )}
 
@@ -138,7 +136,7 @@ export function FranchiseExplorer({ franchise }: { franchise: Franchise }) {
           </div>
         )}
 
-        {franchise.comicsOrderUrl && mode === "deep" && (
+        {franchise.comicsOrderUrl && mode !== "noob" && (
           <p className="text-sm text-text-dim">
             Want the comics too? See the{" "}
             <a
@@ -155,7 +153,7 @@ export function FranchiseExplorer({ franchise }: { franchise: Franchise }) {
       </div>
 
       <ul className="flex flex-col gap-3">
-        {typeFilteredTitles.map((title, i) => (
+        {visibleTitles.map((title, i) => (
           <TitleCard
             key={title.id}
             title={title}

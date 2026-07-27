@@ -1,13 +1,21 @@
 "use client";
 
+import Image from "next/image";
 import type { Title } from "@/types/watch-order";
 import { formatRuntime } from "@/lib/runtime";
+import { posterUrls } from "@/data/posters";
 
-const typeIcon: Record<Title["type"], string> = {
-  movie: "🎬",
-  show: "📺",
-  special: "✨",
-  short: "🎞️",
+const typeMeta: Record<Title["type"], { icon: string; label: string; color: string }> = {
+  movie: { icon: "🎬", label: "Movie", color: "#3b82f6" },
+  show: { icon: "📺", label: "Series", color: "#a855f7" },
+  special: { icon: "✨", label: "Special", color: "#eab308" },
+  short: { icon: "🎞️", label: "Short", color: "#22c55e" },
+};
+
+const tierMeta: Record<Title["tier"], { label: string; color: string } | null> = {
+  essential: null,
+  recommended: { label: "Recommended", color: "#38bdf8" },
+  optional: { label: "Optional", color: "#71717a" },
 };
 
 export function TitleCard({
@@ -23,6 +31,9 @@ export function TitleCard({
   watched: boolean;
   onToggle: (id: string) => void;
 }) {
+  const meta = typeMeta[title.type];
+  const poster = posterUrls[title.id];
+
   return (
     <li
       className={`animate-pop-in group relative flex gap-4 rounded-2xl border p-4 transition-all sm:gap-5 sm:p-5 ${
@@ -31,14 +42,32 @@ export function TitleCard({
       style={{ animationDelay: `${Math.min(index, 20) * 25}ms` }}
     >
       <div
-        className="halftone-overlay relative flex h-20 w-14 shrink-0 items-center justify-center rounded-lg text-2xl sm:h-28 sm:w-20"
-        style={{
-          background: `linear-gradient(160deg, ${accent.primary}55, ${accent.secondary})`,
-        }}
+        className="relative h-24 w-16 shrink-0 overflow-hidden rounded-lg sm:h-32 sm:w-[88px]"
+        style={{ background: `linear-gradient(160deg, ${accent.primary}55, ${accent.secondary})` }}
       >
-        <span aria-hidden>{typeIcon[title.type]}</span>
-        <span className="absolute left-1.5 top-1.5 rounded bg-black/50 px-1.5 py-0.5 text-[10px] font-bold text-white">
+        {poster ? (
+          <Image
+            src={poster}
+            alt={`${title.name} poster`}
+            fill
+            sizes="88px"
+            className="object-cover"
+            unoptimized
+          />
+        ) : (
+          <div className="halftone-overlay flex h-full w-full items-center justify-center text-2xl" aria-hidden>
+            {meta.icon}
+          </div>
+        )}
+        <span className="absolute left-1.5 top-1.5 rounded bg-black/60 px-1.5 py-0.5 text-[10px] font-bold text-white">
           {index}
+        </span>
+        <span
+          className="absolute bottom-1.5 left-1.5 flex items-center gap-1 rounded-full px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wide text-white"
+          style={{ backgroundColor: meta.color }}
+        >
+          <span aria-hidden>{meta.icon}</span>
+          {meta.label}
         </span>
       </div>
 
@@ -64,15 +93,19 @@ export function TitleCard({
         <div className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-text-dim">
           <span>{title.year}{title.endYear ? `–${title.endYear}` : ""}</span>
           <span>·</span>
-          <span className="capitalize">{title.type}</span>
-          <span>·</span>
           <span>{formatRuntime(title.runtimeMinutes)}</span>
-          {title.tier === "deep-dive" && (
+          {title.seasons && title.seasons.length > 0 && (
+            <>
+              <span>·</span>
+              <span>{title.seasons[0].label}{title.seasons[0].episodes ? ` · ${title.seasons[0].episodes} eps` : ""}</span>
+            </>
+          )}
+          {tierMeta[title.tier] && (
             <span
               className="rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide"
-              style={{ backgroundColor: `${accent.primary}22`, color: accent.primary }}
+              style={{ backgroundColor: `${tierMeta[title.tier]!.color}22`, color: tierMeta[title.tier]!.color }}
             >
-              Optional
+              {tierMeta[title.tier]!.label}
             </span>
           )}
         </div>

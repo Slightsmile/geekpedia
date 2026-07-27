@@ -3,7 +3,9 @@ export type ShowType = "show";
 
 export type MediaType = TitleType | ShowType;
 
-export type Tier = "essential" | "deep-dive";
+// Essential = required for the main plot. Recommended = adds real value, not required.
+// Optional = skippable side content (specials, weaker entries, disconnected stories).
+export type Tier = "essential" | "recommended" | "optional";
 
 export interface Season {
   label: string; // e.g. "Season 1"
@@ -17,13 +19,14 @@ export interface Title {
   year: number;
   endYear?: number; // for shows spanning multiple years
   type: MediaType;
-  tier: Tier; // essential (easy mode) vs deep-dive only
+  tier: Tier; // essential / recommended / optional — drives Easy vs Deep Dive and filtering
   runtimeMinutes: number; // total runtime for movies; total series runtime for shows
   releaseOrder: number; // position in release order
   chronoOrder?: number; // position in in-universe chronological order (if applicable)
   note?: string; // "watch before X for the Yelena arc" style annotation
   seasons?: Season[];
   externalNote?: string; // e.g. link/reference to comics reading order
+  roadTo?: string; // slug of a big upcoming crossover this title builds toward, e.g. "doomsday"
 }
 
 export interface Franchise {
@@ -41,4 +44,5 @@ export interface Franchise {
   defaultEasyOrder: "release" | "chrono";
   comicsOrderUrl?: string;
   titles: Title[];
+  roadToEvents?: { slug: string; label: string; description: string }[];
 }

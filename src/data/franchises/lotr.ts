@@ -18,6 +18,6 @@ export const lotr: Franchise = {
     { id: "fellowship-of-the-ring", name: "The Lord of the Rings: The Fellowship of the Ring", year: 2001, type: "movie", tier: "essential", runtimeMinutes: 178, releaseOrder: 1, chronoOrder: 4 },
     { id: "two-towers", name: "The Lord of the Rings: The Two Towers", year: 2002, type: "movie", tier: "essential", runtimeMinutes: 179, releaseOrder: 2, chronoOrder: 5 },
     { id: "return-of-the-king", name: "The Lord of the Rings: The Return of the King", year: 2003, type: "movie", tier: "essential", runtimeMinutes: 201, releaseOrder: 3, chronoOrder: 6 },
-    { id: "war-of-the-rohirrim", name: "The Lord of the Rings: The War of the Rohirrim", year: 2024, type: "movie", tier: "deep-dive", runtimeMinutes: 134, releaseOrder: 7, chronoOrder: 0, note: "Animated prequel set ~183 years before Fellowship — great side content, not required for the main saga." },
+    { id: "war-of-the-rohirrim", name: "The Lord of the Rings: The War of the Rohirrim", year: 2024, type: "movie", tier: "recommended", runtimeMinutes: 134, releaseOrder: 7, chronoOrder: 0, note: "Animated prequel set ~183 years before Fellowship — great side content, not required for the main saga." },
   ],
 };
