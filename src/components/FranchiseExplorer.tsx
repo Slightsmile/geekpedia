@@ -24,6 +24,7 @@ export function FranchiseExplorer({ franchise }: { franchise: Franchise }) {
   const [mcuOnly, setMcuOnly] = useState(false);
   const [nonMcuOnly, setNonMcuOnly] = useState(false);
   const [layout, setLayout] = useState<Layout>("list");
+  const [collectionFilter, setCollectionFilter] = useState<string | null>(null);
   const [roadTo, setRoadTo] = useState<string | null>(null);
   const [spotlight, setSpotlight] = useState<string | null>(null);
   const { watched, toggle, reset, hydrated } = useProgress(franchise.slug);
@@ -69,8 +70,11 @@ export function FranchiseExplorer({ franchise }: { franchise: Franchise }) {
     if (nonMcuOnly) {
       list = list.filter((t) => t.nonMcuCanon);
     }
+    if (collectionFilter) {
+      list = list.filter((t) => t.collection === collectionFilter);
+    }
     return list;
-  }, [mode, typeFilter, mcuOnly, nonMcuOnly, roadTo, sortedByRelease, sortedByChrono, franchise.hasChronoOrder]);
+  }, [mode, typeFilter, mcuOnly, nonMcuOnly, collectionFilter, roadTo, sortedByRelease, sortedByChrono, franchise.hasChronoOrder]);
 
   const handleResume = () => {
     const next = visibleTitles.find((t) => !watched.has(t.id));
@@ -179,6 +183,38 @@ export function FranchiseExplorer({ franchise }: { franchise: Franchise }) {
                   </button>
                 );
               })}
+          </div>
+        )}
+
+        {franchise.collections && franchise.collections.length > 0 && (
+          <div className="flex flex-wrap gap-2">
+            <button
+              type="button"
+              onClick={() => setCollectionFilter(null)}
+              className={`rounded-full border px-3 py-1.5 text-xs font-semibold transition-colors ${
+                collectionFilter === null ? "border-transparent text-white" : "border-border text-text-dim hover:text-text"
+              }`}
+              style={collectionFilter === null ? { backgroundColor: franchise.accent.primary } : undefined}
+            >
+              All Collections
+            </button>
+            {franchise.collections.map((c) => {
+              const active = collectionFilter === c.slug;
+              return (
+                <button
+                  key={c.slug}
+                  type="button"
+                  onClick={() => setCollectionFilter(active ? null : c.slug)}
+                  title={c.description}
+                  className={`rounded-full border px-3 py-1.5 text-xs font-semibold transition-colors ${
+                    active ? "border-transparent text-white" : "border-border text-text-dim hover:text-text"
+                  }`}
+                  style={active ? { backgroundColor: franchise.accent.primary } : undefined}
+                >
+                  {c.label}
+                </button>
+              );
+            })}
           </div>
         )}
 

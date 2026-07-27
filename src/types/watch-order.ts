@@ -28,6 +28,7 @@ export interface Title {
   externalNote?: string; // e.g. link/reference to comics reading order
   roadTo?: string[]; // slugs of big upcoming crossovers this title builds toward, e.g. ["doomsday", "doomsday-mcu-only"]
   nonMcuCanon?: boolean; // true for Fox X-Men, Sony Spider-Man/Venom, or other legacy/adjacent content not MCU canon
+  collection?: string; // slug of a sub-collection within the franchise, e.g. "new-52", "tomorrowverse", "lego" — must match a Franchise.collections entry
 }
 
 export interface Franchise {
@@ -46,4 +47,5 @@ export interface Franchise {
   comicsOrderUrl?: string;
   titles: Title[];
   roadToEvents?: { slug: string; label: string; description: string }[];
+  collections?: { slug: string; label: string; description: string }[]; // filterable sub-collections, e.g. New 52/DCAMU, Tomorrowverse, Lego
 }

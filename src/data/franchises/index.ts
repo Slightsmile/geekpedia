@@ -6,8 +6,10 @@ import { starWars } from "./star-wars";
 import { lotr } from "./lotr";
 import { xMen } from "./x-men";
 import { netflixMarvel } from "./netflix-marvel";
+import { dcAnimation } from "./dc-animation";
+import { marvelAnimation } from "./marvel-animation";
 
-export const franchises: Franchise[] = [mcu, dcu, dceu, starWars, lotr, xMen, netflixMarvel];
+export const franchises: Franchise[] = [mcu, dcu, dceu, starWars, lotr, xMen, netflixMarvel, dcAnimation, marvelAnimation];
 
 export const franchiseBySlug = (slug: string): Franchise | undefined =>
   franchises.find((f) => f.slug === slug);
