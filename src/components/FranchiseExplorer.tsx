@@ -3,13 +3,20 @@
 import { useMemo, useState } from "react";
 import type { Franchise, MediaType } from "@/types/watch-order";
 import { WatchModeToggle, type ViewMode } from "@/components/WatchModeToggle";
-import { TitleCard } from "@/components/TitleCard";
+import { TitleCard, typeMeta } from "@/components/TitleCard";
 import { ProgressTracker } from "@/components/ProgressTracker";
 import { StatsBar } from "@/components/StatsBar";
 import { useProgress } from "@/lib/use-progress";
 
-type TypeFilter = "all" | "movies" | "shows";
+type TypeFilter = "all" | "movies" | "shows" | "specials";
 type Layout = "list" | "grid";
+
+const typeFilterMeta: Record<TypeFilter, { label: string; color: string | null }> = {
+  all: { label: "All", color: null },
+  movies: { label: "Movies", color: typeMeta.movie.color },
+  shows: { label: "Shows", color: typeMeta.show.color },
+  specials: { label: "Specials", color: typeMeta.special.color },
+};
 
 export function FranchiseExplorer({ franchise }: { franchise: Franchise }) {
   const [mode, setMode] = useState<ViewMode>("noob");
@@ -21,7 +28,7 @@ export function FranchiseExplorer({ franchise }: { franchise: Franchise }) {
   const [spotlight, setSpotlight] = useState<string | null>(null);
   const { watched, toggle, reset, hydrated } = useProgress(franchise.slug);
 
-  const isMovieType = (t: MediaType) => t === "movie" || t === "special" || t === "short";
+  const isSpecialType = (t: MediaType) => t === "special" || t === "short";
 
   const sortedByRelease = useMemo(
     () => [...franchise.titles].sort((a, b) => a.releaseOrder - b.releaseOrder),
@@ -38,7 +45,8 @@ export function FranchiseExplorer({ franchise }: { franchise: Franchise }) {
       const mcuOnlySlug = `${roadTo}-mcu-only`;
       const hasMcuOnlyVariant = franchise.roadToEvents?.some((e) => e.slug === mcuOnlySlug);
       const effectiveRoadTo = mcuOnly && hasMcuOnlyVariant ? mcuOnlySlug : roadTo;
-      let list = sortedByChrono.filter((t) => t.roadTo?.includes(effectiveRoadTo));
+      const base = mode === "lore" && franchise.hasChronoOrder ? sortedByChrono : sortedByRelease;
+      let list = base.filter((t) => t.roadTo?.includes(effectiveRoadTo));
       if (nonMcuOnly) {
         list = list.filter((t) => t.nonMcuCanon);
       }
@@ -49,7 +57,11 @@ export function FranchiseExplorer({ franchise }: { franchise: Franchise }) {
       list = list.filter((t) => t.tier === "essential");
     }
     if (typeFilter !== "all") {
-      list = list.filter((t) => (typeFilter === "movies" ? isMovieType(t.type) : t.type === "show"));
+      list = list.filter((t) => {
+        if (typeFilter === "movies") return t.type === "movie";
+        if (typeFilter === "shows") return t.type === "show";
+        return isSpecialType(t.type);
+      });
     }
     if (mcuOnly) {
       list = list.filter((t) => !t.nonMcuCanon);
@@ -171,18 +183,23 @@ export function FranchiseExplorer({ franchise }: { franchise: Franchise }) {
         )}
 
         <div className="flex flex-wrap gap-2 text-xs">
-          {(["all", "movies", "shows"] as TypeFilter[]).map((f) => (
-            <button
-              key={f}
-              onClick={() => setTypeFilter(f)}
-              className={`rounded-full border px-3 py-1.5 font-semibold capitalize transition-colors ${
-                typeFilter === f ? "border-transparent text-white" : "border-border text-text-dim hover:text-text"
-              }`}
-              style={typeFilter === f ? { backgroundColor: franchise.accent.primary } : undefined}
-            >
-              {f}
-            </button>
-          ))}
+          {(["all", "movies", "shows", "specials"] as TypeFilter[]).map((f) => {
+            const meta = typeFilterMeta[f];
+            const active = typeFilter === f;
+            const color = meta.color ?? franchise.accent.primary;
+            return (
+              <button
+                key={f}
+                onClick={() => setTypeFilter(f)}
+                className={`rounded-full border px-3 py-1.5 font-semibold transition-colors ${
+                  active ? "border-transparent text-white" : "border-border text-text-dim hover:text-text"
+                }`}
+                style={active ? { backgroundColor: color } : undefined}
+              >
+                {meta.label}
+              </button>
+            );
+          })}
           <div className="ml-auto flex gap-1 rounded-full border border-border p-1">
             <button
               type="button"

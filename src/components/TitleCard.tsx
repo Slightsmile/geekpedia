@@ -5,7 +5,7 @@ import type { Title } from "@/types/watch-order";
 import { formatRuntime } from "@/lib/runtime";
 import { posterUrls } from "@/data/posters";
 
-const typeMeta: Record<Title["type"], { icon: string; label: string; color: string }> = {
+export const typeMeta: Record<Title["type"], { icon: string; label: string; color: string }> = {
   movie: { icon: "🎬", label: "Movie", color: "#3b82f6" },
   show: { icon: "📺", label: "Series", color: "#a855f7" },
   special: { icon: "✨", label: "Special", color: "#eab308" },
