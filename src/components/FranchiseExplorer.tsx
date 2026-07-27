@@ -35,7 +35,9 @@ export function FranchiseExplorer({ franchise }: { franchise: Franchise }) {
 
   const visibleTitles = useMemo(() => {
     if (roadTo) {
-      const effectiveRoadTo = mcuOnly && roadTo === "doomsday" ? "doomsday-mcu-only" : roadTo;
+      const mcuOnlySlug = `${roadTo}-mcu-only`;
+      const hasMcuOnlyVariant = franchise.roadToEvents?.some((e) => e.slug === mcuOnlySlug);
+      const effectiveRoadTo = mcuOnly && hasMcuOnlyVariant ? mcuOnlySlug : roadTo;
       let list = sortedByChrono.filter((t) => t.roadTo?.includes(effectiveRoadTo));
       if (nonMcuOnly) {
         list = list.filter((t) => t.nonMcuCanon);
@@ -90,39 +92,6 @@ export function FranchiseExplorer({ franchise }: { franchise: Franchise }) {
           accent={franchise.accent.primary}
         />
 
-        {franchise.roadToEvents && franchise.roadToEvents.length > 0 && (
-          <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
-            {franchise.roadToEvents
-              .filter((event) => event.slug !== "doomsday-mcu-only")
-              .map((event) => {
-                const active = roadTo === event.slug;
-                return (
-                  <button
-                    key={event.slug}
-                    type="button"
-                    onClick={() => {
-                      setSpotlight(null);
-                      setRoadTo(active ? null : event.slug);
-                    }}
-                    className={`rounded-2xl border px-4 py-3 text-left transition-all ${
-                      active ? "border-transparent shadow-lg" : "border-border bg-bg-card hover:border-border/40"
-                    }`}
-                    style={active ? { backgroundColor: `${franchise.accent.primary}1a`, borderColor: franchise.accent.primary } : undefined}
-                  >
-                    <div className="flex items-center gap-2">
-                      <span aria-hidden>🛡️</span>
-                      <span className="font-display text-lg leading-none">{event.label}</span>
-                    </div>
-                    <p className="mt-1 text-sm font-semibold" style={active ? { color: franchise.accent.primary } : undefined}>
-                      Road to Doomsday
-                    </p>
-                    <p className="mt-0.5 text-xs text-text-dim">{event.description}</p>
-                  </button>
-                );
-              })}
-          </div>
-        )}
-
         {franchise.slug === "mcu" && (
           <div className="grid grid-cols-2 gap-2">
             <button
@@ -165,6 +134,39 @@ export function FranchiseExplorer({ franchise }: { franchise: Franchise }) {
               </p>
               <p className="mt-0.5 text-xs text-text-dim">Fox X-Men, Sony Spider-Man/Venom, Blade, Ghost Rider, and other pre-MCU or adjacent content.</p>
             </button>
+          </div>
+        )}
+
+        {franchise.roadToEvents && franchise.roadToEvents.length > 0 && (
+          <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+            {franchise.roadToEvents
+              .filter((event) => !event.slug.endsWith("-mcu-only"))
+              .map((event) => {
+                const active = roadTo === event.slug;
+                return (
+                  <button
+                    key={event.slug}
+                    type="button"
+                    onClick={() => {
+                      setSpotlight(null);
+                      setRoadTo(active ? null : event.slug);
+                    }}
+                    className={`rounded-2xl border px-4 py-3 text-left transition-all ${
+                      active ? "border-transparent shadow-lg" : "border-border bg-bg-card hover:border-border/40"
+                    }`}
+                    style={active ? { backgroundColor: `${franchise.accent.primary}1a`, borderColor: franchise.accent.primary } : undefined}
+                  >
+                    <div className="flex items-center gap-2">
+                      <span aria-hidden>🛡️</span>
+                      <span className="font-display text-lg leading-none">{event.label}</span>
+                    </div>
+                    <p className="mt-1 text-sm font-semibold" style={active ? { color: franchise.accent.primary } : undefined}>
+                      Story build-up
+                    </p>
+                    <p className="mt-0.5 text-xs text-text-dim">{event.description}</p>
+                  </button>
+                );
+              })}
           </div>
         )}
 

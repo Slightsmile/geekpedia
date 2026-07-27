@@ -18,6 +18,15 @@ const tierMeta: Record<Title["tier"], { label: string; color: string } | null> =
   optional: { label: "Optional", color: "#71717a" },
 };
 
+function seasonSummary(seasons: NonNullable<Title["seasons"]>) {
+  if (seasons.length === 1) {
+    const s = seasons[0];
+    return `${s.label}${s.episodes ? ` · ${s.episodes} eps` : ""}`;
+  }
+  const totalEps = seasons.reduce((sum, s) => sum + (s.episodes ?? 0), 0);
+  return `${seasons.length} Seasons${totalEps ? ` · ${totalEps} eps` : ""}`;
+}
+
 export function TitleCard({
   title,
   index,
@@ -39,10 +48,13 @@ export function TitleCard({
   if (layout === "grid") {
     return (
       <li
-        className={`animate-pop-in group relative flex flex-col overflow-hidden rounded-2xl border transition-all ${
-          watched ? "border-border/60 bg-bg-card/40 opacity-60" : "border-border bg-bg-card hover:border-border/40"
+        className={`animate-pop-in group relative flex flex-col overflow-hidden rounded-2xl border-2 transition-all ${
+          watched ? "bg-bg-card/40 opacity-60" : "bg-bg-card hover:brightness-110"
         }`}
-        style={{ animationDelay: `${Math.min(index, 20) * 25}ms` }}
+        style={{
+          animationDelay: `${Math.min(index, 20) * 25}ms`,
+          borderColor: watched ? "var(--border)" : meta.color,
+        }}
       >
         <div
           className="relative aspect-2/3 w-full shrink-0 overflow-hidden"
@@ -65,13 +77,6 @@ export function TitleCard({
           <span className="absolute left-1.5 top-1.5 rounded bg-black/60 px-1.5 py-0.5 text-[10px] font-bold text-white">
             {index}
           </span>
-          <span
-            className="absolute bottom-1.5 left-1.5 flex items-center gap-1 rounded-full px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wide text-white"
-            style={{ backgroundColor: meta.color }}
-          >
-            <span aria-hidden>{meta.icon}</span>
-            {meta.label}
-          </span>
           <button
             type="button"
             onClick={() => onToggle(title.id)}
@@ -90,6 +95,11 @@ export function TitleCard({
         <div className="flex flex-1 flex-col gap-1 p-3">
           <h3 className={`font-display text-sm leading-tight ${watched ? "line-through" : ""}`}>{title.name}</h3>
           <div className="flex flex-wrap items-center gap-x-1.5 gap-y-1 text-[11px] text-text-dim">
+            <span className="flex items-center gap-1 font-semibold" style={{ color: meta.color }}>
+              <span aria-hidden>{meta.icon}</span>
+              {meta.label}
+            </span>
+            <span>·</span>
             <span>{title.year}{title.endYear ? `–${title.endYear}` : ""}</span>
             {tierMeta[title.tier] && (
               <span
@@ -107,10 +117,13 @@ export function TitleCard({
 
   return (
     <li
-      className={`animate-pop-in group relative flex gap-4 rounded-2xl border p-4 transition-all sm:gap-5 sm:p-5 ${
-        watched ? "border-border/60 bg-bg-card/40 opacity-60" : "border-border bg-bg-card hover:border-border/40"
+      className={`animate-pop-in group relative flex gap-4 rounded-2xl border-2 p-4 transition-all sm:gap-5 sm:p-5 ${
+        watched ? "bg-bg-card/40 opacity-60" : "bg-bg-card hover:brightness-110"
       }`}
-      style={{ animationDelay: `${Math.min(index, 20) * 25}ms` }}
+      style={{
+        animationDelay: `${Math.min(index, 20) * 25}ms`,
+        borderColor: watched ? "var(--border)" : meta.color,
+      }}
     >
       <div
         className="relative h-24 w-16 shrink-0 overflow-hidden rounded-lg sm:h-32 sm:w-[88px]"
@@ -132,13 +145,6 @@ export function TitleCard({
         )}
         <span className="absolute left-1.5 top-1.5 rounded bg-black/60 px-1.5 py-0.5 text-[10px] font-bold text-white">
           {index}
-        </span>
-        <span
-          className="absolute bottom-1.5 left-1.5 flex items-center gap-1 rounded-full px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wide text-white"
-          style={{ backgroundColor: meta.color }}
-        >
-          <span aria-hidden>{meta.icon}</span>
-          {meta.label}
         </span>
       </div>
 
@@ -162,13 +168,18 @@ export function TitleCard({
           </button>
         </div>
         <div className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-text-dim">
+          <span className="flex items-center gap-1 font-semibold" style={{ color: meta.color }}>
+            <span aria-hidden>{meta.icon}</span>
+            {meta.label}
+          </span>
+          <span>·</span>
           <span>{title.year}{title.endYear ? `–${title.endYear}` : ""}</span>
           <span>·</span>
           <span>{formatRuntime(title.runtimeMinutes)}</span>
           {title.seasons && title.seasons.length > 0 && (
             <>
               <span>·</span>
-              <span>{title.seasons[0].label}{title.seasons[0].episodes ? ` · ${title.seasons[0].episodes} eps` : ""}</span>
+              <span>{seasonSummary(title.seasons)}</span>
             </>
           )}
           {tierMeta[title.tier] && (
