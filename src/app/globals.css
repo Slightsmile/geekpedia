@@ -57,6 +57,24 @@ h1, h2, h3, h4, .font-display {
   animation: pop-in 0.25s ease-out both;
 }
 
+@keyframes logo-pulse {
+  0%, 100% { transform: scale(1); filter: drop-shadow(0 0 0 rgba(237, 29, 36, 0)); }
+  50% { transform: scale(1.08); filter: drop-shadow(0 0 18px rgba(237, 29, 36, 0.55)); }
+}
+
+.animate-logo-pulse {
+  animation: logo-pulse 1.4s ease-in-out infinite;
+}
+
+@keyframes loading-dots {
+  0%, 80%, 100% { opacity: 0.2; }
+  40% { opacity: 1; }
+}
+
+.animate-loading-dot {
+  animation: loading-dots 1.4s ease-in-out infinite;
+}
+
 ::-webkit-scrollbar {
   width: 10px;
   height: 10px;

@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Bebas_Neue, Manrope } from "next/font/google";
+import Image from "next/image";
 import Link from "next/link";
+import { RouteLoadingOverlay } from "@/components/RouteLoadingOverlay";
 import "./globals.css";
 
 const display = Bebas_Neue({
@@ -33,9 +35,11 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${display.variable} ${body.variable} h-full`}>
       <body className="min-h-full flex flex-col antialiased" suppressHydrationWarning>
+        <RouteLoadingOverlay />
         <header className="sticky top-0 z-50 border-b border-border/80 bg-bg/85 backdrop-blur-md">
           <div className="mx-auto flex max-w-6xl items-center justify-between px-5 py-4">
-            <Link href="/" className="font-display text-2xl tracking-wide text-text">
+            <Link href="/" className="flex items-center gap-2 font-display text-2xl tracking-wide text-text">
+              <Image src="/logo.png" alt="" width={32} height={32} className="h-8 w-8" priority />
               GEEK<span className="text-[#ed1d24]">PEDIA</span>
             </Link>
             <nav className="flex items-center gap-5 text-sm text-text-dim">
