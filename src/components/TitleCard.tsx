@@ -24,15 +24,86 @@ export function TitleCard({
   accent,
   watched,
   onToggle,
+  layout = "list",
 }: {
   title: Title;
   index: number;
   accent: { primary: string; secondary: string; text: string };
   watched: boolean;
   onToggle: (id: string) => void;
+  layout?: "list" | "grid";
 }) {
   const meta = typeMeta[title.type];
   const poster = posterUrls[title.id];
+
+  if (layout === "grid") {
+    return (
+      <li
+        className={`animate-pop-in group relative flex flex-col overflow-hidden rounded-2xl border transition-all ${
+          watched ? "border-border/60 bg-bg-card/40 opacity-60" : "border-border bg-bg-card hover:border-border/40"
+        }`}
+        style={{ animationDelay: `${Math.min(index, 20) * 25}ms` }}
+      >
+        <div
+          className="relative aspect-2/3 w-full shrink-0 overflow-hidden"
+          style={{ background: `linear-gradient(160deg, ${accent.primary}55, ${accent.secondary})` }}
+        >
+          {poster ? (
+            <Image
+              src={poster}
+              alt={`${title.name} poster`}
+              fill
+              sizes="(max-width: 640px) 50vw, 200px"
+              className="object-cover"
+              unoptimized
+            />
+          ) : (
+            <div className="halftone-overlay flex h-full w-full items-center justify-center text-4xl" aria-hidden>
+              {meta.icon}
+            </div>
+          )}
+          <span className="absolute left-1.5 top-1.5 rounded bg-black/60 px-1.5 py-0.5 text-[10px] font-bold text-white">
+            {index}
+          </span>
+          <span
+            className="absolute bottom-1.5 left-1.5 flex items-center gap-1 rounded-full px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wide text-white"
+            style={{ backgroundColor: meta.color }}
+          >
+            <span aria-hidden>{meta.icon}</span>
+            {meta.label}
+          </span>
+          <button
+            type="button"
+            onClick={() => onToggle(title.id)}
+            aria-pressed={watched}
+            aria-label={watched ? "Mark as not watched" : "Mark as watched"}
+            className="absolute right-1.5 top-1.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full border-2 bg-black/40 transition-colors"
+            style={{
+              borderColor: watched ? accent.primary : "rgba(255,255,255,0.7)",
+              backgroundColor: watched ? accent.primary : "rgba(0,0,0,0.4)",
+            }}
+          >
+            {watched && <span className="text-xs text-white">✓</span>}
+          </button>
+        </div>
+
+        <div className="flex flex-1 flex-col gap-1 p-3">
+          <h3 className={`font-display text-sm leading-tight ${watched ? "line-through" : ""}`}>{title.name}</h3>
+          <div className="flex flex-wrap items-center gap-x-1.5 gap-y-1 text-[11px] text-text-dim">
+            <span>{title.year}{title.endYear ? `–${title.endYear}` : ""}</span>
+            {tierMeta[title.tier] && (
+              <span
+                className="rounded-full px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wide"
+                style={{ backgroundColor: `${tierMeta[title.tier]!.color}22`, color: tierMeta[title.tier]!.color }}
+              >
+                {tierMeta[title.tier]!.label}
+              </span>
+            )}
+          </div>
+        </div>
+      </li>
+    );
+  }
 
   return (
     <li

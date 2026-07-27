@@ -26,7 +26,8 @@ export interface Title {
   note?: string; // "watch before X for the Yelena arc" style annotation
   seasons?: Season[];
   externalNote?: string; // e.g. link/reference to comics reading order
-  roadTo?: string; // slug of a big upcoming crossover this title builds toward, e.g. "doomsday"
+  roadTo?: string[]; // slugs of big upcoming crossovers this title builds toward, e.g. ["doomsday", "doomsday-mcu-only"]
+  nonMcuCanon?: boolean; // true for Fox X-Men, Sony Spider-Man/Venom, or other legacy/adjacent content not MCU canon
 }
 
 export interface Franchise {

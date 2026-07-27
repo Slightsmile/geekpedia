@@ -9,10 +9,13 @@ import { StatsBar } from "@/components/StatsBar";
 import { useProgress } from "@/lib/use-progress";
 
 type TypeFilter = "all" | "movies" | "shows";
+type Layout = "list" | "grid";
 
 export function FranchiseExplorer({ franchise }: { franchise: Franchise }) {
   const [mode, setMode] = useState<ViewMode>("noob");
   const [typeFilter, setTypeFilter] = useState<TypeFilter>("all");
+  const [mcuOnly, setMcuOnly] = useState(false);
+  const [layout, setLayout] = useState<Layout>("list");
   const [roadTo, setRoadTo] = useState<string | null>(null);
   const [spotlight, setSpotlight] = useState<string | null>(null);
   const { watched, toggle, reset, hydrated } = useProgress(franchise.slug);
@@ -31,7 +34,7 @@ export function FranchiseExplorer({ franchise }: { franchise: Franchise }) {
 
   const visibleTitles = useMemo(() => {
     if (roadTo) {
-      return sortedByChrono.filter((t) => t.roadTo === roadTo);
+      return sortedByChrono.filter((t) => t.roadTo?.includes(roadTo));
     }
     let list = mode === "lore" && franchise.hasChronoOrder ? sortedByChrono : sortedByRelease;
     if (mode === "noob") {
@@ -40,8 +43,11 @@ export function FranchiseExplorer({ franchise }: { franchise: Franchise }) {
     if (typeFilter !== "all") {
       list = list.filter((t) => (typeFilter === "movies" ? isMovieType(t.type) : t.type === "show"));
     }
+    if (mcuOnly) {
+      list = list.filter((t) => !t.nonMcuCanon);
+    }
     return list;
-  }, [mode, typeFilter, roadTo, sortedByRelease, sortedByChrono, franchise.hasChronoOrder]);
+  }, [mode, typeFilter, mcuOnly, roadTo, sortedByRelease, sortedByChrono, franchise.hasChronoOrder]);
 
   const handleResume = () => {
     const next = visibleTitles.find((t) => !watched.has(t.id));
@@ -63,7 +69,7 @@ export function FranchiseExplorer({ franchise }: { franchise: Franchise }) {
   };
 
   return (
-    <div className="mx-auto max-w-3xl px-5 pb-24">
+    <div className={`mx-auto px-5 pb-24 ${layout === "grid" ? "max-w-5xl" : "max-w-3xl"}`}>
       <div className="flex flex-col gap-6 py-8 sm:py-10">
         <WatchModeToggle
           mode={mode}
@@ -113,6 +119,51 @@ export function FranchiseExplorer({ franchise }: { franchise: Franchise }) {
               {f}
             </button>
           ))}
+          {franchise.slug === "mcu" && (
+            <button
+              onClick={() => setMcuOnly((v) => !v)}
+              title="Hide Fox X-Men, Sony Spider-Man/Venom, and other non-MCU-canon content"
+              className={`rounded-full border px-3 py-1.5 font-semibold transition-colors ${
+                mcuOnly ? "border-transparent text-white" : "border-border text-text-dim hover:text-text"
+              }`}
+              style={mcuOnly ? { backgroundColor: franchise.accent.primary } : undefined}
+            >
+              Only MCU
+            </button>
+          )}
+          <div className="ml-auto flex gap-1 rounded-full border border-border p-1">
+            <button
+              type="button"
+              onClick={() => setLayout("list")}
+              aria-pressed={layout === "list"}
+              aria-label="List view"
+              title="List view"
+              className="flex h-7 w-7 items-center justify-center rounded-full transition-colors"
+              style={layout === "list" ? { backgroundColor: franchise.accent.primary, color: "#fff" } : undefined}
+            >
+              <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                <line x1="4" y1="6" x2="20" y2="6" />
+                <line x1="4" y1="12" x2="20" y2="12" />
+                <line x1="4" y1="18" x2="20" y2="18" />
+              </svg>
+            </button>
+            <button
+              type="button"
+              onClick={() => setLayout("grid")}
+              aria-pressed={layout === "grid"}
+              aria-label="Grid view"
+              title="Grid view"
+              className="flex h-7 w-7 items-center justify-center rounded-full transition-colors"
+              style={layout === "grid" ? { backgroundColor: franchise.accent.primary, color: "#fff" } : undefined}
+            >
+              <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2">
+                <rect x="4" y="4" width="7" height="7" rx="1" />
+                <rect x="13" y="4" width="7" height="7" rx="1" />
+                <rect x="4" y="13" width="7" height="7" rx="1" />
+                <rect x="13" y="13" width="7" height="7" rx="1" />
+              </svg>
+            </button>
+          </div>
         </div>
 
         {hydrated && <StatsBar allTitles={visibleTitles} watched={watched} accent={franchise.accent.primary} />}
@@ -137,7 +188,13 @@ export function FranchiseExplorer({ franchise }: { franchise: Franchise }) {
         )}
       </div>
 
-      <ul className="flex flex-col gap-3">
+      <ul
+        className={
+          layout === "grid"
+            ? "grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4"
+            : "flex flex-col gap-3"
+        }
+      >
         {visibleTitles.map((title, i) => (
           <TitleCard
             key={title.id}
@@ -146,6 +203,7 @@ export function FranchiseExplorer({ franchise }: { franchise: Franchise }) {
             accent={franchise.accent}
             watched={watched.has(title.id)}
             onToggle={toggle}
+            layout={layout}
           />
         ))}
       </ul>
