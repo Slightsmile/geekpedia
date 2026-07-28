@@ -56,6 +56,8 @@ export function FranchiseExplorer({ franchise }: { franchise: Franchise }) {
     let list = mode === "lore" && franchise.hasChronoOrder ? sortedByChrono : sortedByRelease;
     if (mode === "noob") {
       list = list.filter((t) => t.tier === "essential");
+    } else if (mode !== "lore") {
+      list = list.filter((t) => t.tier !== "extended");
     }
     if (typeFilter !== "all") {
       list = list.filter((t) => {

@@ -16,6 +16,7 @@ const tierMeta: Record<Title["tier"], { label: string; color: string } | null> =
   essential: null,
   recommended: { label: "Recommended", color: "#38bdf8" },
   optional: { label: "Optional", color: "#71717a" },
+  extended: { label: "Extended Multiverse", color: "#c084fc" },
 };
 
 function seasonSummary(seasons: NonNullable<Title["seasons"]>) {

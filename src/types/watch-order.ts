@@ -5,7 +5,8 @@ export type MediaType = TitleType | ShowType;
 
 // Essential = required for the main plot. Recommended = adds real value, not required.
 // Optional = skippable side content (specials, weaker entries, disconnected stories).
-export type Tier = "essential" | "recommended" | "optional";
+// Extended = only surfaces in Lore Master mode — bonus/tie-in content outside the core run.
+export type Tier = "essential" | "recommended" | "optional" | "extended";
 
 export interface Season {
   label: string; // e.g. "Season 1"
