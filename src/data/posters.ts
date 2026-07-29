@@ -586,4 +586,22 @@ export const posterUrls: Record<string, string> = {
   "fantastic-beasts-1": "https://image.tmdb.org/t/p/w342/fLsaFKExQt05yqjoAvKsmOMYvJR.jpg",
   "fantastic-beasts-crimes-of-grindelwald": "https://image.tmdb.org/t/p/w342/fMMrl8fD9gRCFJvsx0SuFwkEOop.jpg",
   "fantastic-beasts-secrets-of-dumbledore": "https://image.tmdb.org/t/p/w342/3c5GNLB4yRSLBby0trHoA1DSQxQ.jpg",
+
+  // --- Alien & Predator ---
+  "alien": "https://image.tmdb.org/t/p/w342/vfrQk5IPloGg1v9Rzbh2Eg3VGyM.jpg",
+  "aliens": "https://image.tmdb.org/t/p/w342/r1x5JGpyqZU8PYhbs4UcrO1Xb6x.jpg",
+  "predator": "https://image.tmdb.org/t/p/w342/aN3cdjIK70KGmD84et8MMblU87Q.jpg",
+  "alien-3": "https://image.tmdb.org/t/p/w342/xh5wI0UoW7DfS1IyLy3d2CgrCEP.jpg",
+  "predator-2": "https://image.tmdb.org/t/p/w342/83X4VwY9sdSJykskmsplIVG0a4h.jpg",
+  "alien-resurrection": "https://image.tmdb.org/t/p/w342/9aRDMlU5Zwpysilm0WCWzU2PCFv.jpg",
+  "avp": "https://image.tmdb.org/t/p/w342/ySWu5bCnnmgV1cVacvFnFIhgOjp.jpg",
+  "avp-requiem": "https://image.tmdb.org/t/p/w342/5iTwPDNtvK6ZZF607BHBbU3HO0B.jpg",
+  "predators": "https://image.tmdb.org/t/p/w342/wdniP8NDaJIydi1hMxhpbJMUfr6.jpg",
+  "prometheus": "https://image.tmdb.org/t/p/w342/qsYQflQhOuhDpQ0W2aOcwqgDAeI.jpg",
+  "alien-covenant": "https://image.tmdb.org/t/p/w342/zecMELPbU5YMQpC81Z8ImaaXuf9.jpg",
+  "the-predator": "https://image.tmdb.org/t/p/w342/a3eWGF6YPF7No5Rbtjc8QpDvz7l.jpg",
+  "prey": "https://image.tmdb.org/t/p/w342/ujr5pztc1oitbe7ViMUOilFaJ7s.jpg",
+  "alien-romulus": "https://image.tmdb.org/t/p/w342/b33nnKl1GSFbao4l3fZDDqsMx0F.jpg",
+  "predator-killer-of-killers": "https://image.tmdb.org/t/p/w342/2XDQa6EmFHSA37j1t0w88vpWqj9.jpg",
+  "predator-badlands": "https://image.tmdb.org/t/p/w342/pHpq9yNUIo6aDoCXEBzjSolywgz.jpg",
 };

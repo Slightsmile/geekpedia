@@ -13,8 +13,9 @@ import { terminator } from "./terminator";
 import { transformers } from "./transformers";
 import { conjuring } from "./conjuring";
 import { wizardingWorld } from "./wizarding-world";
+import { alienPredator } from "./alien-predator";
 
-export const franchises: Franchise[] = [mcu, dcu, dceu, starWars, lotr, xMen, netflixMarvel, dcAnimation, marvelAnimation, arrowverse, terminator, transformers, conjuring, wizardingWorld];
+export const franchises: Franchise[] = [mcu, dcu, dceu, starWars, lotr, xMen, netflixMarvel, dcAnimation, marvelAnimation, arrowverse, terminator, transformers, conjuring, wizardingWorld, alienPredator];
 
 export const franchiseBySlug = (slug: string): Franchise | undefined =>
   franchises.find((f) => f.slug === slug);
