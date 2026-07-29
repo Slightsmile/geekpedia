@@ -9,8 +9,12 @@ import { netflixMarvel } from "./netflix-marvel";
 import { dcAnimation } from "./dc-animation";
 import { marvelAnimation } from "./marvel-animation";
 import { arrowverse } from "./arrowverse";
+import { terminator } from "./terminator";
+import { transformers } from "./transformers";
+import { conjuring } from "./conjuring";
+import { wizardingWorld } from "./wizarding-world";
 
-export const franchises: Franchise[] = [mcu, dcu, dceu, starWars, lotr, xMen, netflixMarvel, dcAnimation, marvelAnimation, arrowverse];
+export const franchises: Franchise[] = [mcu, dcu, dceu, starWars, lotr, xMen, netflixMarvel, dcAnimation, marvelAnimation, arrowverse, terminator, transformers, conjuring, wizardingWorld];
 
 export const franchiseBySlug = (slug: string): Franchise | undefined =>
   franchises.find((f) => f.slug === slug);
