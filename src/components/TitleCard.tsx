@@ -10,6 +10,7 @@ export const typeMeta: Record<Title["type"], { icon: string; label: string; colo
   show: { icon: "📺", label: "Series", color: "#a855f7" },
   special: { icon: "✨", label: "Special", color: "#eab308" },
   short: { icon: "🎞️", label: "Short", color: "#22c55e" },
+  game: { icon: "🎮", label: "Game", color: "#f97316" },
 };
 
 const tierMeta: Record<Title["tier"], { label: string; color: string } | null> = {

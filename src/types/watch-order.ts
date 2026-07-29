@@ -1,4 +1,4 @@
-export type TitleType = "movie" | "special" | "short";
+export type TitleType = "movie" | "special" | "short" | "game";
 export type ShowType = "show";
 
 export type MediaType = TitleType | ShowType;
@@ -29,6 +29,7 @@ export interface Title {
   externalNote?: string; // e.g. link/reference to comics reading order
   roadTo?: string[]; // slugs of big upcoming crossovers this title builds toward, e.g. ["doomsday", "doomsday-mcu-only"]
   nonMcuCanon?: boolean; // true for Fox X-Men, Sony Spider-Man/Venom, or other legacy/adjacent content not MCU canon
+  nonCanon?: boolean; // true for content outside this franchise's own core canon, e.g. Resident Evil's live-action films/TV vs. the games+CGI-movie canon
   collection?: string; // slug of a sub-collection within the franchise, e.g. "new-52", "tomorrowverse", "lego" — must match a Franchise.collections entry
 }
 
@@ -49,4 +50,10 @@ export interface Franchise {
   titles: Title[];
   roadToEvents?: { slug: string; label: string; description: string }[];
   collections?: { slug: string; label: string; description: string }[]; // filterable sub-collections, e.g. New 52/DCAMU, Tomorrowverse, Lego
+  canonToggle?: {
+    canonLabel: string; // e.g. "Games + CGI Canon"
+    canonDescription: string;
+    nonCanonLabel: string; // e.g. "Live-Action (Non-Canon)"
+    nonCanonDescription: string;
+  }; // drives a generic canon/non-canon filter pair, based on Title.nonCanon
 }

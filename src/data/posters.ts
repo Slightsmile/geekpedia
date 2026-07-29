@@ -1,6 +1,19 @@
 // Poster thumbnails sourced from TMDB (The Movie Database), used here purely as a
 // visual watch-order aid — not redistributed or claimed as original content.
 export const posterUrls: Record<string, string> = {
+  "re-degeneration-2008": "https://image.tmdb.org/t/p/w342/1x5OaFOo38JAwR5yXxeuvQg3VWH.jpg",
+  "re-damnation-2012": "https://image.tmdb.org/t/p/w342/zkHSURVCrt7rpvDDgUXO75CV1v4.jpg",
+  "re-vendetta-2017": "https://image.tmdb.org/t/p/w342/kdiMtgjWXEH9QZ85hgmWaSwshjf.jpg",
+  "re-infinite-darkness-2021": "https://image.tmdb.org/t/p/w342/wWwTjKER5a8LRUGHrw86VU0gUy1.jpg",
+  "re-death-island-2023": "https://image.tmdb.org/t/p/w342/qayga07ICNDswm0cMJ8P3VwklFZ.jpg",
+  "re-2002-film": "https://image.tmdb.org/t/p/w342/1UKNef590A0ZaMnxsscIcWuK1Em.jpg",
+  "re-apocalypse-2004": "https://image.tmdb.org/t/p/w342/way9dOm4dM2sm9UMcu2PEXMTX0q.jpg",
+  "re-extinction-2007": "https://image.tmdb.org/t/p/w342/6yaLr7Ymg5cvbtSVi5hHwBKx35I.jpg",
+  "re-afterlife-2010": "https://image.tmdb.org/t/p/w342/nYPc4sJdCZLY7YFYUmqXXYt3luH.jpg",
+  "re-retribution-2012": "https://image.tmdb.org/t/p/w342/ohdUDWVlcbuWphaLu6wS91xdJ73.jpg",
+  "re-final-chapter-2016": "https://image.tmdb.org/t/p/w342/7glPlA0xPpxPxBu0TnY4ulQVCV1.jpg",
+  "re-welcome-to-raccoon-city-2021": "https://image.tmdb.org/t/p/w342/bArhvjRHl535XMaSh9VjInF2mSZ.jpg",
+  "re-netflix-2022": "https://image.tmdb.org/t/p/w342/rmLvn4w4HMdxobPkjmIqrhJiXDO.jpg",
   "a-new-hope": "https://image.tmdb.org/t/p/w342/6FfCtAuVAW8XJjZ7eWeLibRLWTw.jpg",
   "across-the-spider-verse": "https://image.tmdb.org/t/p/w342/8Vt6mWEReuy4Of61Lnj5Xj704m8.jpg",
   "agatha-all-along": "https://image.tmdb.org/t/p/w342/mGsxKwXUjojitRv2E9qMTbxbBRd.jpg",

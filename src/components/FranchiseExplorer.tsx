@@ -8,7 +8,7 @@ import { ProgressTracker } from "@/components/ProgressTracker";
 import { StatsBar } from "@/components/StatsBar";
 import { useProgress } from "@/lib/use-progress";
 
-type TypeFilter = "all" | "movies" | "shows" | "specials";
+type TypeFilter = "all" | "movies" | "shows" | "specials" | "games";
 type Layout = "list" | "grid";
 
 const typeFilterMeta: Record<TypeFilter, { label: string; color: string | null }> = {
@@ -16,6 +16,7 @@ const typeFilterMeta: Record<TypeFilter, { label: string; color: string | null }
   movies: { label: "Movies", color: typeMeta.movie.color },
   shows: { label: "Shows", color: typeMeta.show.color },
   specials: { label: "Specials", color: typeMeta.special.color },
+  games: { label: "Games", color: typeMeta.game.color },
 };
 
 export function FranchiseExplorer({ franchise }: { franchise: Franchise }) {
@@ -23,6 +24,8 @@ export function FranchiseExplorer({ franchise }: { franchise: Franchise }) {
   const [typeFilter, setTypeFilter] = useState<TypeFilter>("all");
   const [mcuOnly, setMcuOnly] = useState(false);
   const [nonMcuOnly, setNonMcuOnly] = useState(false);
+  const [canonOnly, setCanonOnly] = useState(false);
+  const [nonCanonOnly, setNonCanonOnly] = useState(false);
   const [layout, setLayout] = useState<Layout>("list");
   const [collectionFilter, setCollectionFilter] = useState<string | null>(null);
   const [roadTo, setRoadTo] = useState<string | null>(null);
@@ -30,6 +33,16 @@ export function FranchiseExplorer({ franchise }: { franchise: Franchise }) {
   const { watched, toggle, reset, hydrated } = useProgress(franchise.slug);
 
   const isSpecialType = (t: MediaType) => t === "special" || t === "short";
+
+  const availableTypeFilters = useMemo(() => {
+    const present = new Set(franchise.titles.map((t) => t.type));
+    const filters: TypeFilter[] = ["all"];
+    if (present.has("movie")) filters.push("movies");
+    if (present.has("show")) filters.push("shows");
+    if (present.has("special") || present.has("short")) filters.push("specials");
+    if (present.has("game")) filters.push("games");
+    return filters;
+  }, [franchise.titles]);
 
   const sortedByRelease = useMemo(
     () => [...franchise.titles].sort((a, b) => a.releaseOrder - b.releaseOrder),
@@ -63,6 +76,7 @@ export function FranchiseExplorer({ franchise }: { franchise: Franchise }) {
       list = list.filter((t) => {
         if (typeFilter === "movies") return t.type === "movie";
         if (typeFilter === "shows") return t.type === "show";
+        if (typeFilter === "games") return t.type === "game";
         return isSpecialType(t.type);
       });
     }
@@ -72,11 +86,17 @@ export function FranchiseExplorer({ franchise }: { franchise: Franchise }) {
     if (nonMcuOnly) {
       list = list.filter((t) => t.nonMcuCanon);
     }
+    if (canonOnly) {
+      list = list.filter((t) => !t.nonCanon);
+    }
+    if (nonCanonOnly) {
+      list = list.filter((t) => t.nonCanon);
+    }
     if (collectionFilter) {
       list = list.filter((t) => t.collection === collectionFilter);
     }
     return list;
-  }, [mode, typeFilter, mcuOnly, nonMcuOnly, collectionFilter, roadTo, sortedByRelease, sortedByChrono, franchise.hasChronoOrder]);
+  }, [mode, typeFilter, mcuOnly, nonMcuOnly, canonOnly, nonCanonOnly, collectionFilter, roadTo, sortedByRelease, sortedByChrono, franchise.hasChronoOrder]);
 
   const handleResume = () => {
     const next = visibleTitles.find((t) => !watched.has(t.id));
@@ -155,6 +175,45 @@ export function FranchiseExplorer({ franchise }: { franchise: Franchise }) {
           </div>
         )}
 
+        {franchise.canonToggle && (
+          <div className="grid grid-cols-2 gap-2">
+            <button
+              type="button"
+              onClick={() => {
+                setCanonOnly((v) => !v);
+                setNonCanonOnly(false);
+              }}
+              className={`rounded-2xl border px-4 py-3 text-left transition-all ${
+                canonOnly ? "border-transparent shadow-lg" : "border-border bg-bg-card hover:border-border/40"
+              }`}
+              style={canonOnly ? { backgroundColor: `${franchise.accent.primary}1a`, borderColor: franchise.accent.primary } : undefined}
+            >
+              <div className="flex items-center gap-2">
+                <span aria-hidden>🧬</span>
+                <span className="font-display text-lg leading-none">{franchise.canonToggle.canonLabel}</span>
+              </div>
+              <p className="mt-0.5 text-xs text-text-dim">{franchise.canonToggle.canonDescription}</p>
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setNonCanonOnly((v) => !v);
+                setCanonOnly(false);
+              }}
+              className={`rounded-2xl border px-4 py-3 text-left transition-all ${
+                nonCanonOnly ? "border-transparent shadow-lg" : "border-border bg-bg-card hover:border-border/40"
+              }`}
+              style={nonCanonOnly ? { backgroundColor: `${franchise.accent.primary}1a`, borderColor: franchise.accent.primary } : undefined}
+            >
+              <div className="flex items-center gap-2">
+                <span aria-hidden>🎬</span>
+                <span className="font-display text-lg leading-none">{franchise.canonToggle.nonCanonLabel}</span>
+              </div>
+              <p className="mt-0.5 text-xs text-text-dim">{franchise.canonToggle.nonCanonDescription}</p>
+            </button>
+          </div>
+        )}
+
         {franchise.roadToEvents && franchise.roadToEvents.length > 0 && (
           <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
             {franchise.roadToEvents
@@ -221,7 +280,7 @@ export function FranchiseExplorer({ franchise }: { franchise: Franchise }) {
         )}
 
         <div className="flex flex-wrap gap-2 text-xs">
-          {(["all", "movies", "shows", "specials"] as TypeFilter[]).map((f) => {
+          {availableTypeFilters.map((f) => {
             const meta = typeFilterMeta[f];
             const active = typeFilter === f;
             const color = meta.color ?? franchise.accent.primary;
