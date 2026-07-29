@@ -10,7 +10,6 @@ export const marvelAnimation: Franchise = {
     "Marvel's animated output spans decades of pre-MCU eras — 1960s-80s classic/vintage shows, the '90s-2000s wave (X-Men, Spider-Man, Avengers), the 2010-2012 Marvel Anime co-productions, Marvel Knights shorts, and standalone films including Sony's acclaimed Spider-Verse trilogy — alongside the current MCU-canon Marvel Studios Animation slate (What If...?, I Am Groot, X-Men '97, and more), all cataloged here.",
   hasChronoOrder: false,
   defaultEasyOrder: "release",
-  comicsOrderUrl: "https://comicbufferbd.blogspot.com",
   collections: [
     { slug: "animated-movies", label: "Animated Movies", description: "Standalone Marvel animated films, including Sony's Spider-Verse trilogy." },
     { slug: "lego", label: "Lego Shorts", description: "Lego Marvel Super Heroes tie-in shorts." },

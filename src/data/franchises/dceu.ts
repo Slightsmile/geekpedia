@@ -10,7 +10,6 @@ export const dceu: Franchise = {
     "The original shared DC film universe, kicked off by Man of Steel and largely closed out in 2023 as Warner Bros. rebooted with the Gunn/Safran DCU. A looser, less strictly-continuous universe than the MCU — quality and connectivity vary a lot film to film.",
   hasChronoOrder: true,
   defaultEasyOrder: "release",
-  comicsOrderUrl: "https://comicbufferbd.blogspot.com",
   titles: [
     { id: "man-of-steel", name: "Man of Steel", year: 2013, type: "movie", tier: "essential", runtimeMinutes: 143, releaseOrder: 1, chronoOrder: 3, note: "Zack Snyder's grounded, darker origin story for Superman — the film that founded this continuity." },
     { id: "batman-v-superman", name: "Batman v Superman: Dawn of Justice", year: 2016, type: "movie", tier: "essential", runtimeMinutes: 151, releaseOrder: 2, chronoOrder: 4, note: "Watch the Ultimate Edition if you can — the theatrical cut is choppier. Plants the seeds for the wider Justice League." },

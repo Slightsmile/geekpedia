@@ -10,19 +10,17 @@ export const yakuza: Franchise = {
     "Unlike Resident Evil or Call of Duty, Like a Dragon (formerly Yakuza) has no alternate timelines or reboots — every mainline game builds on the last, following Kazuma Kiryu across nearly two decades before passing the torch to Ichiban Kasuga. The Judgment detective spin-offs share the same world and are fully canon; Like a Dragon: Ishin! and Dead Souls sit outside the main timeline.",
   hasChronoOrder: true,
   defaultEasyOrder: "release",
-  comicsOrderUrl: "https://comicbufferbd.blogspot.com",
   canonToggle: {
     canonLabel: "Main Timeline",
     canonDescription: "The mainline Yakuza/Like a Dragon games and the canon Judgment spin-offs.",
     nonCanonLabel: "Separate Continuity",
     nonCanonDescription: "Like a Dragon: Ishin! and Yakuza: Dead Souls — familiar faces, but outside the main timeline.",
+    middleButton: {
+      label: "Judgment Series",
+      description: "Judgment and Lost Judgment — canon detective spin-offs sharing the same world.",
+      collection: "judgment",
+    },
   },
-  collections: [
-    { slug: "mainline", label: "Mainline Series", description: "The core numbered Yakuza/Like a Dragon entries and remakes." },
-    { slug: "judgment", label: "Judgment Series", description: "Judgment and Lost Judgment — canon detective spin-offs sharing the same world." },
-    { slug: "historical-spinoff", label: "Historical Spin-Off", description: "Like a Dragon: Ishin! and Ryu ga Gotoku Kenzan! — familiar faces in a separate continuity." },
-    { slug: "non-canon", label: "Non-Canon", description: "Yakuza: Dead Souls — a zombie spin-off outside the main story." },
-  ],
   titles: [
     { id: "yakuza-2005", name: "Yakuza", year: 2005, type: "game", tier: "optional", runtimeMinutes: 900, releaseOrder: 1, chronoOrder: 2, collection: "mainline", note: "The original — largely superseded by Yakuza Kiwami's 2016 remake." },
     { id: "yakuza-2-2006", name: "Yakuza 2", year: 2006, type: "game", tier: "optional", runtimeMinutes: 900, releaseOrder: 2, chronoOrder: 3, collection: "mainline", note: "Superseded by Yakuza Kiwami 2's 2017 remake." },

@@ -10,7 +10,6 @@ export const dcu: Franchise = {
     "A total reboot of DC's shared continuity, chartered by James Gunn and Peter Safran starting with Creature Commandos and Superman. Separate continuity from the legacy DCEU — no shared canon between them.",
   hasChronoOrder: true,
   defaultEasyOrder: "release",
-  comicsOrderUrl: "https://comicbufferbd.blogspot.com",
   titles: [
     { id: "the-suicide-squad-2021", name: "The Suicide Squad", year: 2021, type: "movie", tier: "recommended", runtimeMinutes: 132, releaseOrder: 0.5, chronoOrder: 0, note: "Technically a legacy DCEU film, but included here since Peacemaker's DCU continuity picks up directly from it — watch for context on Peacemaker's history." },
     { id: "creature-commandos", name: "Creature Commandos", year: 2024, type: "show", tier: "essential", runtimeMinutes: 330, releaseOrder: 1, chronoOrder: 2, seasons: [{ label: "Season 1", year: 2024, episodes: 7 }], note: "Animated series that formally opens the new DCU continuity, set before Superman." },

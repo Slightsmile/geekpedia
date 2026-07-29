@@ -10,7 +10,6 @@ export const starWars: Franchise = {
     "Nine main saga films, a growing pile of streaming series, and a timeline that spans a thousand years. Easy Mode follows the original release order (the way the story was meant to unfold); Deep Dive lets you flip to strict in-universe chronology.",
   hasChronoOrder: true,
   defaultEasyOrder: "release",
-  comicsOrderUrl: "https://comicbufferbd.blogspot.com",
   titles: [
     { id: "phantom-menace", name: "Episode I: The Phantom Menace", year: 1999, type: "movie", tier: "essential", runtimeMinutes: 136, releaseOrder: 4, chronoOrder: 1 },
     { id: "attack-of-clones", name: "Episode II: Attack of the Clones", year: 2002, type: "movie", tier: "essential", runtimeMinutes: 142, releaseOrder: 5, chronoOrder: 2 },

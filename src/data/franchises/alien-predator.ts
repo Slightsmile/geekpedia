@@ -5,7 +5,7 @@ export const alienPredator: Franchise = {
   name: "Alien & Predator",
   shortName: "Alien & Predator",
   tagline: "Two separate universes, connected by the AVP crossover films.",
-  accent: { primary: "#39ff14", secondary: "#0a0a0a", text: "#0a0a0a" },
+  accent: { primary: "#e8590c", secondary: "#0a0a0a", text: "#ffffff" },
   description:
     "Alien and Predator started as separate universes before Alien vs. Predator crossed them over. You can watch them as one shared timeline (including AVP) or keep each canon separate — use the collection filter below to isolate just Alien or just Predator. Note: most fans treat the AVP films as a non-canon side continuity, since the modern Alien prequels (Prometheus, Covenant) don't acknowledge them.",
   hasChronoOrder: true,
@@ -15,6 +15,7 @@ export const alienPredator: Franchise = {
     { slug: "predator", label: "Predator", description: "The Predator side of the universe, from Prey through Badlands." },
     { slug: "crossover", label: "AVP Crossover", description: "The Alien vs. Predator films — treated by most fans as a separate, non-canon continuity." },
   ],
+  collectionsDisplay: "buttons",
   titles: [
     { id: "alien", name: "Alien", year: 1979, type: "movie", tier: "essential", runtimeMinutes: 117, releaseOrder: 1, chronoOrder: 12, collection: "alien", note: "One of the greatest sci-fi horror films ever made — introduces the Xenomorph. Set in 2122." },
     { id: "aliens", name: "Aliens", year: 1986, type: "movie", tier: "essential", runtimeMinutes: 137, releaseOrder: 2, chronoOrder: 14, collection: "alien", note: "Widely considered the best sequel and one of the greatest action films ever made. Set in 2179." },

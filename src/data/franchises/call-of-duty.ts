@@ -10,7 +10,6 @@ export const callOfDuty: Franchise = {
     "Unlike most franchises, Call of Duty has multiple independent universes: the original Modern Warfare trilogy, the Black Ops timeline (now the franchise's main canon), the Modern Warfare reboot, the classic WWII games, and a handful of standalone futuristic entries. For new players, it's best to experience each timeline separately rather than force one continuous chronology.",
   hasChronoOrder: true,
   defaultEasyOrder: "release",
-  comicsOrderUrl: "https://comicbufferbd.blogspot.com",
   collections: [
     { slug: "black-ops", label: "Black Ops Timeline", description: "The franchise's current main canon — World at War through Black Ops 6, including the Modern Warfare reboot trilogy woven into the same continuity." },
     { slug: "original-mw", label: "Original Modern Warfare", description: "The 2007-2011 trilogy that redefined military shooters — Modern Warfare, MW2, and MW3." },

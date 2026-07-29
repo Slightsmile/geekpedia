@@ -46,14 +46,19 @@ export interface Franchise {
   description: string;
   hasChronoOrder: boolean;
   defaultEasyOrder: "release" | "chrono";
-  comicsOrderUrl?: string;
   titles: Title[];
   roadToEvents?: { slug: string; label: string; description: string }[];
   collections?: { slug: string; label: string; description: string }[]; // filterable sub-collections, e.g. New 52/DCAMU, Tomorrowverse, Lego
+  collectionsDisplay?: "pills" | "buttons"; // "pills" (default) = small chip row; "buttons" = big cards like Road-to-X/canonToggle, no "All" reset chip
   canonToggle?: {
     canonLabel: string; // e.g. "Games + CGI Canon"
     canonDescription: string;
     nonCanonLabel: string; // e.g. "Live-Action (Non-Canon)"
     nonCanonDescription: string;
+    middleButton?: {
+      label: string; // e.g. "Judgment Series"
+      description: string;
+      collection: string; // slug of a Title.collection to filter to when this button is active
+    }; // an optional third button rendered between canon/non-canon, filtering to one collection
   }; // drives a generic canon/non-canon filter pair, based on Title.nonCanon
 }

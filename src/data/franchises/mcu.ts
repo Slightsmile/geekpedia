@@ -10,7 +10,6 @@ export const mcu: Franchise = {
     "The Marvel Cinematic Universe kicked off in 2008 with Iron Man and has grown into the biggest interconnected franchise in film history — now including the Netflix street-level corner (folded in via Echo and Daredevil: Born Again) and the Fox X-Men saga (folded in via Deadpool & Wolverine). Release order preserves the reveals as fans first experienced them; chronological order follows the in-universe timeline instead.",
   hasChronoOrder: true,
   defaultEasyOrder: "release",
-  comicsOrderUrl: "https://comicbufferbd.blogspot.com",
   roadToEvents: [
     {
       slug: "doomsday",

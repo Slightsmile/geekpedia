@@ -10,7 +10,6 @@ export const residentEvil: Franchise = {
     "Resident Evil has one of the longest-running continuous stories in gaming — almost every mainline game is canon, with a few remakes now serving as the definitive versions for modern players. The CGI movies (Degeneration, Damnation, Vendetta, Infinite Darkness, Death Island) are canon to the game universe, while the live-action Milla Jovovich films, the 2021 reboot, and the Netflix series form a completely separate, non-canon continuity.",
   hasChronoOrder: true,
   defaultEasyOrder: "release",
-  comicsOrderUrl: "https://comicbufferbd.blogspot.com",
   canonToggle: {
     canonLabel: "Games + CGI Canon",
     canonDescription: "The mainline games, Revelations/Outbreak/side-story spin-offs, and the canon CGI movies.",

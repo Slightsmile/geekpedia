@@ -10,7 +10,6 @@ export const dcAnimation: Franchise = {
     "DC's animated output spans two interconnected 'must watch in order' continuities — the New 52/DCAMU arc (Justice League: The Flashpoint Paradox through Apokolips War) and its spiritual successor, the Tomorrowverse (Superman: Man of Tomorrow through Crisis on Infinite Earths) — alongside decades of standalone films, the beloved classic DCAU (Batman: The Animated Series, Justice League Unlimited, and more), Lego crossovers, and shorts, all cataloged here.",
   hasChronoOrder: true,
   defaultEasyOrder: "release",
-  comicsOrderUrl: "https://comicbufferbd.blogspot.com",
   collections: [
     { slug: "new-52", label: "New 52 / DCAMU", description: "The first interconnected animated arc — Justice League: The Flashpoint Paradox through Apokolips War." },
     { slug: "tomorrowverse", label: "Tomorrowverse", description: "The New 52's spiritual successor — Superman: Man of Tomorrow through Crisis on Infinite Earths." },

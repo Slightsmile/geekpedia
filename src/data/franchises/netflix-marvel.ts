@@ -10,7 +10,6 @@ export const netflixMarvel: Franchise = {
     "The gritty, street-level Marvel/Netflix corner of the universe — later folded into MCU canon via Daredevil: Born Again and Echo. Best watched in interlocking-release order to catch every crossover.",
   hasChronoOrder: false,
   defaultEasyOrder: "release",
-  comicsOrderUrl: "https://comicbufferbd.blogspot.com",
   titles: [
     { id: "daredevil-s1", name: "Daredevil (Season 1)", year: 2015, type: "show", tier: "essential", runtimeMinutes: 650, releaseOrder: 1, seasons: [{ label: "Season 1", year: 2015, episodes: 13 }] },
     { id: "jessica-jones-s1", name: "Jessica Jones (Season 1)", year: 2015, type: "show", tier: "essential", runtimeMinutes: 650, releaseOrder: 2, seasons: [{ label: "Season 1", year: 2015, episodes: 13 }] },

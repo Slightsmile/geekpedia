@@ -8,11 +8,10 @@ import { ProgressTracker } from "@/components/ProgressTracker";
 import { StatsBar } from "@/components/StatsBar";
 import { useProgress } from "@/lib/use-progress";
 
-type TypeFilter = "all" | "movies" | "shows" | "specials" | "games";
+type TypeFilter = "movies" | "shows" | "specials" | "games";
 type Layout = "list" | "grid";
 
-const typeFilterMeta: Record<TypeFilter, { label: string; color: string | null }> = {
-  all: { label: "All", color: null },
+const typeFilterMeta: Record<TypeFilter, { label: string; color: string }> = {
   movies: { label: "Movies", color: typeMeta.movie.color },
   shows: { label: "Shows", color: typeMeta.show.color },
   specials: { label: "Specials", color: typeMeta.special.color },
@@ -21,11 +20,12 @@ const typeFilterMeta: Record<TypeFilter, { label: string; color: string | null }
 
 export function FranchiseExplorer({ franchise }: { franchise: Franchise }) {
   const [mode, setMode] = useState<ViewMode>("noob");
-  const [typeFilter, setTypeFilter] = useState<TypeFilter>("all");
+  const [typeFilters, setTypeFilters] = useState<Set<TypeFilter>>(new Set());
   const [mcuOnly, setMcuOnly] = useState(false);
   const [nonMcuOnly, setNonMcuOnly] = useState(false);
   const [canonOnly, setCanonOnly] = useState(false);
   const [nonCanonOnly, setNonCanonOnly] = useState(false);
+  const [middleOnly, setMiddleOnly] = useState(false);
   const [layout, setLayout] = useState<Layout>("list");
   const [collectionFilter, setCollectionFilter] = useState<string | null>(null);
   const [roadTo, setRoadTo] = useState<string | null>(null);
@@ -36,7 +36,7 @@ export function FranchiseExplorer({ franchise }: { franchise: Franchise }) {
 
   const availableTypeFilters = useMemo(() => {
     const present = new Set(franchise.titles.map((t) => t.type));
-    const filters: TypeFilter[] = ["all"];
+    const filters: TypeFilter[] = [];
     if (present.has("movie")) filters.push("movies");
     if (present.has("show")) filters.push("shows");
     if (present.has("special") || present.has("short")) filters.push("specials");
@@ -72,12 +72,13 @@ export function FranchiseExplorer({ franchise }: { franchise: Franchise }) {
     } else if (mode !== "lore") {
       list = list.filter((t) => t.tier !== "extended");
     }
-    if (typeFilter !== "all") {
+    if (typeFilters.size > 0) {
       list = list.filter((t) => {
-        if (typeFilter === "movies") return t.type === "movie";
-        if (typeFilter === "shows") return t.type === "show";
-        if (typeFilter === "games") return t.type === "game";
-        return isSpecialType(t.type);
+        if (typeFilters.has("movies") && t.type === "movie") return true;
+        if (typeFilters.has("shows") && t.type === "show") return true;
+        if (typeFilters.has("games") && t.type === "game") return true;
+        if (typeFilters.has("specials") && isSpecialType(t.type)) return true;
+        return false;
       });
     }
     if (mcuOnly) {
@@ -92,11 +93,14 @@ export function FranchiseExplorer({ franchise }: { franchise: Franchise }) {
     if (nonCanonOnly) {
       list = list.filter((t) => t.nonCanon);
     }
+    if (middleOnly && franchise.canonToggle?.middleButton) {
+      list = list.filter((t) => t.collection === franchise.canonToggle!.middleButton!.collection);
+    }
     if (collectionFilter) {
       list = list.filter((t) => t.collection === collectionFilter);
     }
     return list;
-  }, [mode, typeFilter, mcuOnly, nonMcuOnly, canonOnly, nonCanonOnly, collectionFilter, roadTo, sortedByRelease, sortedByChrono, franchise.hasChronoOrder]);
+  }, [mode, typeFilters, mcuOnly, nonMcuOnly, canonOnly, nonCanonOnly, middleOnly, collectionFilter, roadTo, sortedByRelease, sortedByChrono, franchise.hasChronoOrder, franchise.canonToggle]);
 
   const handleResume = () => {
     const next = visibleTitles.find((t) => !watched.has(t.id));
@@ -176,12 +180,13 @@ export function FranchiseExplorer({ franchise }: { franchise: Franchise }) {
         )}
 
         {franchise.canonToggle && (
-          <div className="grid grid-cols-2 gap-2">
+          <div className={`grid gap-2 ${franchise.canonToggle.middleButton ? "grid-cols-1 sm:grid-cols-3" : "grid-cols-2"}`}>
             <button
               type="button"
               onClick={() => {
                 setCanonOnly((v) => !v);
                 setNonCanonOnly(false);
+                setMiddleOnly(false);
               }}
               className={`rounded-2xl border px-4 py-3 text-left transition-all ${
                 canonOnly ? "border-transparent shadow-lg" : "border-border bg-bg-card hover:border-border/40"
@@ -194,11 +199,32 @@ export function FranchiseExplorer({ franchise }: { franchise: Franchise }) {
               </div>
               <p className="mt-0.5 text-xs text-text-dim">{franchise.canonToggle.canonDescription}</p>
             </button>
+            {franchise.canonToggle.middleButton && (
+              <button
+                type="button"
+                onClick={() => {
+                  setMiddleOnly((v) => !v);
+                  setCanonOnly(false);
+                  setNonCanonOnly(false);
+                }}
+                className={`rounded-2xl border px-4 py-3 text-left transition-all ${
+                  middleOnly ? "border-transparent shadow-lg" : "border-border bg-bg-card hover:border-border/40"
+                }`}
+                style={middleOnly ? { backgroundColor: `${franchise.accent.primary}1a`, borderColor: franchise.accent.primary } : undefined}
+              >
+                <div className="flex items-center gap-2">
+                  <span aria-hidden>🕵️</span>
+                  <span className="font-display text-lg leading-none">{franchise.canonToggle.middleButton.label}</span>
+                </div>
+                <p className="mt-0.5 text-xs text-text-dim">{franchise.canonToggle.middleButton.description}</p>
+              </button>
+            )}
             <button
               type="button"
               onClick={() => {
                 setNonCanonOnly((v) => !v);
                 setCanonOnly(false);
+                setMiddleOnly(false);
               }}
               className={`rounded-2xl border px-4 py-3 text-left transition-all ${
                 nonCanonOnly ? "border-transparent shadow-lg" : "border-border bg-bg-card hover:border-border/40"
@@ -247,7 +273,33 @@ export function FranchiseExplorer({ franchise }: { franchise: Franchise }) {
           </div>
         )}
 
-        {franchise.collections && franchise.collections.length > 0 && (
+        {franchise.collections && franchise.collections.length > 0 && franchise.collectionsDisplay === "buttons" && (
+          <div
+            className={`grid grid-cols-1 gap-2 ${
+              franchise.collections.length >= 3 ? "sm:grid-cols-3" : franchise.collections.length === 2 ? "sm:grid-cols-2" : ""
+            }`}
+          >
+            {franchise.collections.map((c) => {
+              const active = collectionFilter === c.slug;
+              return (
+                <button
+                  key={c.slug}
+                  type="button"
+                  onClick={() => setCollectionFilter(active ? null : c.slug)}
+                  className={`rounded-2xl border px-4 py-3 text-left transition-all ${
+                    active ? "border-transparent shadow-lg" : "border-border bg-bg-card hover:border-border/40"
+                  }`}
+                  style={active ? { backgroundColor: `${franchise.accent.primary}1a`, borderColor: franchise.accent.primary } : undefined}
+                >
+                  <span className="font-display text-lg leading-none">{c.label}</span>
+                  <p className="mt-1 text-xs text-text-dim">{c.description}</p>
+                </button>
+              );
+            })}
+          </div>
+        )}
+
+        {franchise.collections && franchise.collections.length > 0 && franchise.collectionsDisplay !== "buttons" && (
           <div className="flex flex-wrap gap-2">
             <button
               type="button"
@@ -280,18 +332,40 @@ export function FranchiseExplorer({ franchise }: { franchise: Franchise }) {
         )}
 
         <div className="flex flex-wrap gap-2 text-xs">
+          {availableTypeFilters.length > 1 && (
+            <button
+              onClick={() => setTypeFilters(new Set())}
+              title="Show all media types"
+              className={`rounded-full border px-3 py-1.5 font-semibold transition-colors ${
+                typeFilters.size === 0 ? "border-transparent text-white" : "border-border text-text-dim hover:text-text"
+              }`}
+              style={typeFilters.size === 0 ? { backgroundColor: franchise.accent.primary } : undefined}
+            >
+              All
+            </button>
+          )}
           {availableTypeFilters.map((f) => {
             const meta = typeFilterMeta[f];
-            const active = typeFilter === f;
-            const color = meta.color ?? franchise.accent.primary;
+            const active = typeFilters.has(f);
             return (
               <button
                 key={f}
-                onClick={() => setTypeFilter(f)}
+                onClick={() =>
+                  setTypeFilters((prev) => {
+                    const next = new Set(prev);
+                    if (next.has(f)) {
+                      next.delete(f);
+                    } else {
+                      next.add(f);
+                    }
+                    return next;
+                  })
+                }
+                title="Click to toggle this type in the filter"
                 className={`rounded-full border px-3 py-1.5 font-semibold transition-colors ${
                   active ? "border-transparent text-white" : "border-border text-text-dim hover:text-text"
                 }`}
-                style={active ? { backgroundColor: color } : undefined}
+                style={active ? { backgroundColor: meta.color } : undefined}
               >
                 {meta.label}
               </button>

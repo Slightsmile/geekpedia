@@ -10,7 +10,6 @@ export const lotr: Franchise = {
     "Peter Jackson's six-film saga across Middle-earth, plus the Second Age of Amazon's Rings of Power and the upcoming Hunt for Gollum. The Hobbit trilogy is a prequel released a decade after the original trilogy — story order and release order genuinely differ here.",
   hasChronoOrder: true,
   defaultEasyOrder: "chrono",
-  comicsOrderUrl: "https://comicbufferbd.blogspot.com",
   titles: [
     { id: "rings-of-power-s1", name: "The Lord of the Rings: The Rings of Power (Season 1)", year: 2022, type: "show", tier: "recommended", runtimeMinutes: 480, releaseOrder: 8, chronoOrder: -2, seasons: [{ label: "Season 1", year: 2022, episodes: 8 }], note: "Set thousands of years before the films, in the Second Age — forging of the Rings, rise of Sauron, and the founding of Numenor's downfall arc." },
     { id: "rings-of-power-s2", name: "The Lord of the Rings: The Rings of Power (Season 2)", year: 2024, type: "show", tier: "recommended", runtimeMinutes: 480, releaseOrder: 9, chronoOrder: -1, seasons: [{ label: "Season 2", year: 2024, episodes: 8 }], note: "Continues the Second Age story — Sauron's rise to power and the forging of the Rings of Power proper." },

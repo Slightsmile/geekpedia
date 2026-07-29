@@ -10,7 +10,6 @@ export const xMen: Franchise = {
     "Two decades of Fox X-Men movies across a messy, retconned timeline, plus the Deadpool trilogy and the character's 2024 arrival in the MCU proper via Deadpool & Wolverine.",
   hasChronoOrder: true,
   defaultEasyOrder: "release",
-  comicsOrderUrl: "https://comicbufferbd.blogspot.com",
   titles: [
     { id: "x-men", name: "X-Men", year: 2000, type: "movie", tier: "essential", runtimeMinutes: 104, releaseOrder: 1, chronoOrder: 6 },
     { id: "x2", name: "X2: X-Men United", year: 2003, type: "movie", tier: "essential", runtimeMinutes: 133, releaseOrder: 2, chronoOrder: 7 },

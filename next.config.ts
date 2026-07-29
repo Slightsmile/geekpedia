@@ -13,6 +13,11 @@ const nextConfig: NextConfig = {
         hostname: "image.tmdb.org",
         pathname: "/**",
       },
+      {
+        protocol: "https",
+        hostname: "media.rawg.io",
+        pathname: "/**",
+      },
     ],
   },
 };

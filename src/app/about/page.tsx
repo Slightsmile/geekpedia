@@ -11,9 +11,9 @@ export default function AboutPage() {
       <h1 className="font-display text-4xl">About this site</h1>
       <div className="mt-6 space-y-4 text-text-dim">
         <p>
-          Geekpedia is a hub for franchise viewing orders — movies and TV to start, with comics
-          and game-playing orders planned down the line. The goal is one clean answer to
-          &ldquo;what order do I watch this in?&rdquo; instead of a dozen contradictory blog posts.
+          Geekpedia is a hub for franchise viewing and playing orders — movies, TV, and now video
+          games too. The goal is one clean answer to &ldquo;what order do I watch (or play) this
+          in?&rdquo; instead of a dozen contradictory blog posts.
         </p>
         <p>
           The base lists started as the author&apos;s own guides on{" "}
@@ -26,7 +26,7 @@ export default function AboutPage() {
             comicbufferbd.blogspot.com
           </a>
           , then were cross-checked and updated against community watch-order research to stay
-          current as new movies and shows release.
+          current as new movies, shows, and games release.
         </p>
         <p>
           Every franchise ships with three modes: <strong className="text-text">🟢 Noob</strong>{" "}
@@ -37,10 +37,43 @@ export default function AboutPage() {
           no server, nothing leaves your device.
         </p>
         <p>
-          Poster art is sourced from Wikipedia (fair-use film/show poster crops), used purely as a
-          visual aid — not redistributed or claimed as original content.
+          Poster and cover art is sourced from TMDB (The Movie Database) and RAWG (video games),
+          used purely as a visual aid — not redistributed or claimed as original content.
         </p>
-        <p>Spot an error or an outdated entry? This is a living project — updates roll out as franchises evolve.</p>
+        <p>
+          Spot an error, an outdated entry, or want to request a franchise? This is a living
+          project — updates roll out as franchises evolve.{" "}
+          <a
+            href="https://github.com/Slightsmile/geekpedia/issues/new"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline hover:text-text"
+          >
+            Open an issue on GitHub
+          </a>{" "}
+          and it'll get looked at. If you find this useful,{" "}
+          <a
+            href="https://github.com/Slightsmile/geekpedia"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline hover:text-text"
+          >
+            star the repo
+          </a>{" "}
+          — it helps more than you'd think.
+        </p>
+        <p>
+          Made by{" "}
+          <a
+            href="https://mohi-uddin.me/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline hover:text-text"
+          >
+            Slightsmile
+          </a>
+          .
+        </p>
       </div>
     </div>
   );
