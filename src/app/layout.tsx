@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Analytics } from "@vercel/analytics/next";
 import { Bebas_Neue, Manrope } from "next/font/google";
 import Image from "next/image";
 import Link from "next/link";
@@ -61,6 +62,7 @@ export default function RootLayout({
             </Link>
           </p>
         </footer>
+        <Analytics />
       </body>
     </html>
   );
