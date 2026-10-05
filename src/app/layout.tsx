@@ -26,6 +26,11 @@ export const metadata: Metadata = {
   description:
     "Geekpedia is the definitive hub for franchise watch orders — MCU, DCU, Star Wars, Lord of the Rings, X-Men, and more. Noob mode for newcomers, Lore Master mode for completionists.",
   keywords: ["watch order", "MCU watch order", "DCU watch order", "Star Wars watch order", "movie order", "geekpedia"],
+  icons: {
+    icon: "/logo.png",
+    shortcut: "/logo.png",
+    apple: "/logo.png",
+  },
 };
 
 export default function RootLayout({
