@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { notFound } from "next/navigation";
 import { franchiseBySlug, allFranchiseSlugs } from "@/data/franchises";
 import { FranchiseExplorer } from "@/components/FranchiseExplorer";
@@ -47,7 +48,9 @@ export default async function FranchisePage({
           <p className="mx-auto mt-3 max-w-xl text-text-dim">{franchise.description}</p>
         </div>
       </section>
-      <FranchiseExplorer franchise={franchise} />
+      <Suspense fallback={null}>
+        <FranchiseExplorer franchise={franchise} />
+      </Suspense>
     </div>
   );
 }

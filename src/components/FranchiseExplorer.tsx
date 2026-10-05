@@ -1,6 +1,7 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import type { Franchise, MediaType } from "@/types/watch-order";
 import { WatchModeToggle, type ViewMode } from "@/components/WatchModeToggle";
 import { TitleCard, typeMeta } from "@/components/TitleCard";
@@ -18,8 +19,14 @@ const typeFilterMeta: Record<TypeFilter, { label: string; color: string }> = {
   games: { label: "Games", color: typeMeta.game.color },
 };
 
+const VALID_MODES: ViewMode[] = ["noob", "geek", "lore"];
+
 export function FranchiseExplorer({ franchise }: { franchise: Franchise }) {
-  const [mode, setMode] = useState<ViewMode>("noob");
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const modeParam = searchParams.get("mode");
+  const initialMode: ViewMode = VALID_MODES.includes(modeParam as ViewMode) ? (modeParam as ViewMode) : "noob";
+  const [mode, setMode] = useState<ViewMode>(initialMode);
   const [typeFilters, setTypeFilters] = useState<Set<TypeFilter>>(new Set());
   const [mcuOnly, setMcuOnly] = useState(false);
   const [nonMcuOnly, setNonMcuOnly] = useState(false);
@@ -31,6 +38,22 @@ export function FranchiseExplorer({ franchise }: { franchise: Franchise }) {
   const [roadTo, setRoadTo] = useState<string | null>(null);
   const [spotlight, setSpotlight] = useState<string | null>(null);
   const { watched, toggle, reset, hydrated } = useProgress(franchise.slug);
+
+  const updateMode = useCallback(
+    (m: ViewMode) => {
+      setMode(m);
+      const params = new URLSearchParams(searchParams.toString());
+      params.set("mode", m);
+      router.replace(`?${params.toString()}`, { scroll: false });
+    },
+    [router, searchParams]
+  );
+
+  useEffect(() => {
+    if (VALID_MODES.includes(modeParam as ViewMode) && modeParam !== mode) {
+      setMode(modeParam as ViewMode);
+    }
+  }, [modeParam, mode]);
 
   const isSpecialType = (t: MediaType) => t === "special" || t === "short";
 
@@ -129,7 +152,7 @@ export function FranchiseExplorer({ franchise }: { franchise: Franchise }) {
           onChange={(m) => {
             setRoadTo(null);
             setSpotlight(null);
-            setMode(m);
+            updateMode(m);
           }}
           accent={franchise.accent.primary}
         />

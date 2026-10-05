@@ -283,6 +283,7 @@ export const posterUrls: Record<string, string> = {
   "jla-adventures-trapped-in-time": "https://image.tmdb.org/t/p/w342/qchNuTbnleCtlIB8wyV03f36VuF.jpg",
   "jokers-playhouse": "https://image.tmdb.org/t/p/w342/yN2onYqPZPYzCNcBLFez1VP2Zki.jpg",
   "justice-league": "https://image.tmdb.org/t/p/w342/caIAQIoM9NLZofT8fz8t47W1gYe.jpg",
+  "justice-league-2017": "https://image.tmdb.org/t/p/w342/t66xYDa6WrRQ31A3dzQ8d5knfXx.jpg",
   "justice-league-coie-part-one": "https://image.tmdb.org/t/p/w342/mcRVsjMbhFstRK9z2oGRHiIvulr.jpg",
   "justice-league-coie-part-three": "https://image.tmdb.org/t/p/w342/mcRVsjMbhFstRK9z2oGRHiIvulr.jpg",
   "justice-league-coie-part-two": "https://image.tmdb.org/t/p/w342/mcRVsjMbhFstRK9z2oGRHiIvulr.jpg",
